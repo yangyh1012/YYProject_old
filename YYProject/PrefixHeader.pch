@@ -1,0 +1,49 @@
+//
+//  PrefixHeader.pch
+//  YYProject
+//
+//  Created by 杨毅辉 on 16/3/12.
+//  Copyright © 2016年 yangyh. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#ifdef __OBJC__
+#import "AFNetworking.h"
+#import "MJRefresh.h"
+#import "MBProgressHUD.h"
+#import "MJExtension.h"
+#import <SDWebImage/UIImageView+WebCache.h>
+#import <SDWebImage/UIButton+WebCache.h>
+
+
+#import "NSString+YYString.h"
+#import "YYDataHandle.h"
+#import "YYCommunication.h"
+#import "YYConstants.h"
+#import "YYAPI.h"
+
+#endif
+
+
+#ifdef DEBUG
+#ifndef DLog
+#   define DLog(fmt, ...) {NSLog((@"%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__);}
+#endif
+#ifndef ELog
+#   define ELog(err) {if(err) DLog(@"%@", err)}
+#endif
+#else
+#ifndef DLog
+#   define DLog(...)
+#endif
+#ifndef ELog
+#   define ELog(err)
+#endif
+#endif
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* PrefixHeader_pch */
