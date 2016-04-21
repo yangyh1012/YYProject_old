@@ -26,6 +26,9 @@ static YYDataHandle *sharedManager = nil;
     
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:obj forKey:key];
+    
+    //BUG FIX:防止当应用突然退出时，数据没有保存
+    [defaults synchronize];
 }
 
 - (NSString *)userDefaultStringValueWithKey:(NSString *)key {

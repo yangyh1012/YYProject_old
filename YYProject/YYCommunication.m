@@ -88,7 +88,7 @@ static YYCommunication *sharedManager = nil;
                 DLog(@"get请求成功，请求地址为：%@",URLString);
                 DLog(@"====================================================================================================");
                 
-                [self.delegate requestResult:responseObject otherParams:otherParams URLString:URLString];
+                [self.delegate requestResult:responseObject URLString:URLString otherParams:otherParams];
                 
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
@@ -108,7 +108,7 @@ static YYCommunication *sharedManager = nil;
                 DLog(@"post请求成功，请求地址为：%@",URLString);
                 DLog(@"====================================================================================================");
                 
-                [self.delegate requestResult:responseObject otherParams:otherParams URLString:URLString];
+                [self.delegate requestResult:responseObject URLString:URLString otherParams:otherParams];
                 
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
@@ -138,7 +138,7 @@ static YYCommunication *sharedManager = nil;
                 DLog(@"post请求成功，请求地址为：%@",URLString);
                 DLog(@"====================================================================================================");
                 
-                [self.delegate requestResult:responseObject otherParams:otherParams URLString:URLString];
+                [self.delegate requestResult:responseObject URLString:URLString otherParams:otherParams];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
                 DLog(@"post请求失败，请求地址为：%@",URLString);

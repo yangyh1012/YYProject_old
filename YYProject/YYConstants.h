@@ -70,4 +70,6 @@ extern NSString *const YYTestNotification;
 
 - (UIColor *)YYProjectLightColor;
 
+- (UIColor *)YYProjectLightLightColor;
+
 @end

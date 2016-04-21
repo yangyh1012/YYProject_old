@@ -13,7 +13,7 @@
 
 @required
 
-- (void)testDelegateHandle:(id _Nullable)object;
+- (void)testDelegateHandle:(nullable id)object;
 
 @optional
 
@@ -75,7 +75,23 @@ typedef NS_ENUM(NSInteger, YYBaseViewControllerTestType) {
 - (nullable NSMutableAttributedString *)attributedStringSetting:(nullable NSString *)allStr rangeStr:(nullable NSString *)rangeStr textColor:(nullable UIColor *)color;
 
 
-- (void)requestResult:(nullable id)responseObject otherParams:(nullable id)otherParams URLString:(nullable NSString *)URLString;
+/**
+ *  添加视图边框
+ *
+ *  @param view        需要添加边框的视图
+ *  @param borderWidth 边框宽度
+ *  @param borderColor 边框颜色
+ */
+- (void)layerSettingWithView:(nullable UIView *)view borderWidth:(CGFloat)borderWidth borderColor:(nullable UIColor *)borderColor;
+
+- (void)layerSettingWithView:(nullable UIView *)view borderWidth:(CGFloat)borderWidth borderColor:(nullable UIColor *)borderColor masksToBounds:(BOOL)masksToBounds;
+
+- (void)layerSettingWithView:(nullable UIView *)view borderWidth:(CGFloat)borderWidth borderColor:(nullable UIColor *)borderColor cornerRadius:(CGFloat)cornerRadius masksToBounds:(BOOL)masksToBounds;
+
+
+
+
+- (void)requestResult:(nullable id)responseObject URLString:(nullable NSString *)URLString otherParams:(nullable id)otherParams;
 
 - (void)requestFailure:(nullable NSString *)URLString error:(nullable NSError *)error otherParams:(nullable id)otherParams;
 
@@ -87,7 +103,9 @@ typedef NS_ENUM(NSInteger, YYBaseViewControllerTestType) {
 - (nullable NSString *)nullStrSetting:(nullable NSString *)str;
 
 
+- (void)showDataEmptyTip:(nullable NSString *)tip positionY:(CGFloat)y;
 
+- (void)hideDataEmptyTip;
 
 
 - (void)showHUDWithText:(nullable NSString *)text mode:(MBProgressHUDMode)mode yOffset:(CGFloat)yOffset font:(CGFloat)fontSize;

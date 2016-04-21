@@ -21,6 +21,8 @@
 
 @property (nonatomic, strong) NSMutableArray *datas;
 
+@property (nonatomic, strong) UILabel *dataEmptyTipLabel;
+
 @end
 
 @implementation YYBaseViewController
@@ -70,6 +72,12 @@
                                                      name:UIKeyboardWillHideNotification object:nil];
     }
     
+    if (flag) {
+        
+        //可以使界面的View的frame有值
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -198,6 +206,9 @@
             [tabBarController.navigationController popToViewController:temp animated:YES];
         }
     }
+    
+    //取消透明
+    self.navigationController.navigationBar.translucent = NO;
 }
 
 
@@ -225,7 +236,7 @@
     [[YYCommunication sharedManager] httpRequest:YYProjectBaseUrl parameters:requestParams otherParams:otherParams mode:YYCommunicationModePost];
 }
 
-- (void)requestResult:(id)responseObject otherParams:(id)otherParams URLString:(NSString *)URLString {
+- (void)requestResult:(nullable id)responseObject URLString:(nullable NSString *)URLString otherParams:(nullable id)otherParams {
     
     NSNumber *responseStatus = (NSNumber *)[[responseObject objectForKey:@"status"] objectForKey:@"succeed"];
     
@@ -393,6 +404,34 @@
     return brandLabelText;
 }
 
+
+
+
+- (void)layerSettingWithView:(UIView *)view borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor {
+    
+    [self layerSettingWithView:view borderWidth:borderWidth borderColor:borderColor cornerRadius:0 masksToBounds:YES];
+}
+
+- (void)layerSettingWithView:(UIView *)view borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor masksToBounds:(BOOL)masksToBounds {
+    
+    [self layerSettingWithView:view borderWidth:borderWidth borderColor:borderColor cornerRadius:0 masksToBounds:masksToBounds];
+}
+
+- (void)layerSettingWithView:(UIView *)view borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor cornerRadius:(CGFloat)cornerRadius masksToBounds:(BOOL)masksToBounds {
+    
+    view.layer.borderWidth = borderWidth;
+    view.layer.borderColor = borderColor.CGColor;
+    
+    if (cornerRadius != 0) {
+        
+        view.layer.cornerRadius = cornerRadius;
+    }
+    
+    view.layer.masksToBounds = masksToBounds;
+}
+
+
+
 - (NSString *)nullStrSetting:(NSString *)str {
     
     if (!str) {
@@ -416,6 +455,26 @@
         
         return 1.0f;
     }
+}
+
+- (void)showDataEmptyTip:(NSString *)tip positionY:(CGFloat)y {
+    
+    if (!self.dataEmptyTipLabel) {
+        
+        self.dataEmptyTipLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 30)];
+        self.dataEmptyTipLabel.text = tip;
+        [self.view addSubview:self.dataEmptyTipLabel];
+        [self.dataEmptyTipLabel sizeToFit];
+        self.dataEmptyTipLabel.frame = CGRectMake((self.view.frame.size.width - self.dataEmptyTipLabel.frame.size.width) / 2.0, (self.view.frame.size.height - self.dataEmptyTipLabel.frame.size.height) / 2.0 - y, self.dataEmptyTipLabel.frame.size.width, self.dataEmptyTipLabel.frame.size.height);
+    }
+    
+    [self.view bringSubviewToFront:self.dataEmptyTipLabel];
+    self.dataEmptyTipLabel.hidden = NO;
+}
+
+- (void)hideDataEmptyTip {
+    
+    self.dataEmptyTipLabel.hidden = YES;
 }
 
 #pragma mark - Notification

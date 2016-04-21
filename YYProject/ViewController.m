@@ -115,6 +115,8 @@
 
 - (void)dealloc {
     
+    [YYCommunication sharedManager].delegate = nil;
+    
     //解除键盘出现通知
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardWillShowNotification object:nil];
@@ -250,7 +252,7 @@
 
 - (void)faceImageBtnHandle:(id)sender {
     
-    __weak ViewController *wself = self;
+    __weak ViewController *wself = self;//防止循环引用
     
     if (!self.faceImageAlertController) {
         
@@ -345,6 +347,14 @@
             [self.datas addObject:data];
         }
         
+        if ([array count] <= 0) {
+            
+            [self showDataEmptyTip:@"暂无数据" positionY:0];
+        } else {
+            
+            [self hideDataEmptyTip];
+        }
+        
         [self.tableView reloadData];
     } else if ([notificationName isEqualToString:@""]) {
         
@@ -365,6 +375,14 @@
             
             YYTestData *data = [YYTestData mj_objectWithKeyValues:dic];
             [self.datas addObject:data];
+        }
+        
+        if ([array count] <= 0) {
+            
+            [self showDataEmptyTip:@"暂无数据" positionY:0];
+        } else {
+            
+            [self hideDataEmptyTip];
         }
         
         //BUG FIX:提前刷新，数据崩溃 stopLoading之后跟着reloadData

@@ -12,7 +12,7 @@
 
 @required
 
-- (void)requestResult:(nullable id)responseObject otherParams:(nullable id)otherParams URLString:(nullable NSString *)URLString;
+- (void)requestResult:(nullable id)responseObject URLString:(nullable NSString *)URLString otherParams:(nullable id)otherParams;
 
 - (void)requestFailure:(nullable NSString *)URLString error:(nullable NSError *)error otherParams:(nullable id)otherParams;
 
