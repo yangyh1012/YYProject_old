@@ -39,6 +39,9 @@
 ### ViewController：
 * 每次创建新的视图控制器时，可以直接拷贝该文件中的代码到新的视图控制器中。
 
-
+# 想要修改工程名？
+* 双击YYProject.xcworkspace，进入工程中。可以看到最顶层的工程project名字是YYProject，点击YYProject为可编辑状态，改为你想要的名字，比如DDTest。刚改完会弹出“Rename project content items？”点击rename。再点击OK。这时可以看到最顶层的工程project名字换成了DDTest。
+* 工程名称虽然换了，但是文件夹的名称还没换。关掉工程，我们进入该工程的文件夹目录，直接修改工程最顶层文件夹名称“YYProject-master”，改为“DDTest”，点击“YYProject.xcworkspace”改为“DDTest.xcworkspace”,改完之后，点击“DDTest.xcworkspace”进入工程。
+* 进入工程后发现它喵的，左侧菜单最顶层的“DDTest.xcodeproj”为红色，表示链接失败了。别担心，选中该文件，在右侧Identifier and Type中的Location下面有个小文件夹图标，点击弹出文件选择框，在文件选择框中找到“DDTest.xcodeproj”文件，点击Choose。点完后关闭工程，再重新打开，编译，运行，perfect！
 
 
