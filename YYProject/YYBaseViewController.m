@@ -127,6 +127,8 @@
 
 - (void)dealloc {
     
+    [YYCommunication sharedManager].delegate = nil;
+    
     BOOL flag = NO;
     if (flag) {
      

@@ -115,8 +115,6 @@
 
 - (void)dealloc {
     
-    [YYCommunication sharedManager].delegate = nil;
-    
     //解除键盘出现通知
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardWillShowNotification object:nil];
