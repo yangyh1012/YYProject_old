@@ -31,6 +31,20 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    //我常用的Xcode快捷键
+    // ctrl+6 打开方法导航
+    // shift+↑ 选取
+    // command+L 输入行数跳到指定行
+    // command+/ 添加注释
+    // command+[ 左移代码块
+    // command+←或者↑ 跳到该文件的头部
+    // command+ctrl+← 跳到上一个页面
+    // command+ctrl+↑ h文件和m文件互换
+    // command+shift+J 打开文件导航
+    //
+    //
+    //
+    
     BOOL flag = NO;
     
     //添加视图
