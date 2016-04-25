@@ -45,6 +45,6 @@
 * 进入工程后发现它喵的，左侧菜单最顶层的“DDTest.xcodeproj”为红色，表示链接失败了。别担心，选中该文件，在右侧Identifier and Type中的Location下面有个小文件夹图标，点击弹出文件选择框，在文件选择框中找到“DDTest.xcodeproj”文件，点击Choose。点完后关闭工程，再重新打开，编译，运行，perfect！
 
 # 有哪些值得使用的插件呢？
-* [VVDocumenter-Xcode.xcplugin]()喵神开发的类似Java的注释工具，非常好用。
-* [Alcatraz.xcplugin](http://blog.devtang.com/2014/03/05/use-alcatraz-to-manage-xcode-plugins/?utm_source=tuicool&utm_medium=referral)管理iOS插件的好工具，值得下载。
-* [ESJsonFormat.xcplugin](http://www.oschina.net/p/ESJsonFormat-Xcode)将 JSON 格式化输出为模型的属性。
+* [VVDocumenter-Xcode.xcplugin]()：喵神开发的类似Java的注释工具，非常好用。
+* [Alcatraz.xcplugin](http://blog.devtang.com/2014/03/05/use-alcatraz-to-manage-xcode-plugins/?utm_source=tuicool&utm_medium=referral)：管理iOS插件的好工具，值得下载。
+* [ESJsonFormat.xcplugin](http://www.oschina.net/p/ESJsonFormat-Xcode)：将 JSON 格式化输出为模型的属性。
