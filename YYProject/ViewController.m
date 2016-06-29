@@ -105,7 +105,6 @@
 - (void)viewDidAppear:(BOOL)animated {
     
     [super viewDidAppear:animated];
-    
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -136,6 +135,7 @@
     UIButton *leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [leftButton setTitle:@"厦门" forState:UIControlStateNormal];
     [leftButton addTarget:self action:@selector(leftNavigationItemHandle:) forControlEvents:UIControlEventTouchUpInside];
+//    leftButton.titleLabel.font = [UIFont systemFontOfSize:16.0f];
     leftButton.frame = CGRectMake(0, 0, 40, 18);
     [leftButton sizeToFit];
     
@@ -463,7 +463,7 @@
     }
     
     //设置单元格不可点击
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     DLog(@"row:%@",@(row));
     DLog(@"section:%@",@(section));
@@ -478,6 +478,17 @@
     return 80.0f;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    NSInteger section = indexPath.section;
+    NSInteger row = indexPath.row;
+    
+    DLog(@"row:%@",@(row));
+    DLog(@"section:%@",@(section));
+}
+
 //- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
 //
 //    return 5;
@@ -487,17 +498,7 @@
 //
 //    return 5;
 //}
-//
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//
-//    NSInteger section = indexPath.section;
-//    NSInteger row = indexPath.row;
-//
-//    DLog(@"row:%@",@(row));
-//    DLog(@"section:%@",@(section));
-//}
+
 
 #pragma mark - UICollectionViewDelegate
 

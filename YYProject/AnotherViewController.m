@@ -1,0 +1,230 @@
+//
+//  AnotherViewController.m
+//  YYProject
+//
+//  Created by 杨毅辉 on 16/6/23.
+//  Copyright © 2016年 yangyh. All rights reserved.
+//
+
+#import "AnotherViewController.h"
+
+@interface AnotherViewController ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
+//<UITableViewDataSource,UITableViewDelegate>
+
+@property (nonatomic, strong) UITableView *tableView;
+
+@property (nonatomic, strong) UICollectionView *collectionView;
+
+@end
+
+@implementation AnotherViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+    
+    self.title = @"标题";
+    
+    
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    
+    //不要分割线
+//    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    //去掉多余的分割线
+    self.tableView.tableFooterView = [[UIView alloc] init];
+    
+    
+    UICollectionViewFlowLayout *collectionViewFlowLayout = [[UICollectionViewFlowLayout alloc] init];
+    collectionViewFlowLayout.itemSize = CGSizeMake((self.view.frame.size.width - 65.0f) / 3.0f, 85.0f);
+    collectionViewFlowLayout.scrollDirection = UICollectionViewScrollDirectionVertical;
+    collectionViewFlowLayout.minimumLineSpacing = 10;
+    collectionViewFlowLayout.minimumInteritemSpacing = 10 * [self multiplesForPhone];
+    collectionViewFlowLayout.sectionInset = UIEdgeInsetsMake(0, 10 * [self multiplesForPhone], 0, 10 * [self multiplesForPhone]);
+    
+    self.collectionView.delegate = self;
+    self.collectionView.dataSource = self;
+    
+    self.collectionView.collectionViewLayout = collectionViewFlowLayout;
+    
+    
+    [self addNavItem];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)dealloc {
+    
+    
+}
+
+#pragma mark - ViewInit
+- (void)addNavItem {
+    
+    UIButton *leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [leftButton setTitle:@"厦门" forState:UIControlStateNormal];
+    [leftButton addTarget:self action:@selector(leftNavigationItemHandle:) forControlEvents:UIControlEventTouchUpInside];
+    //    leftButton.titleLabel.font = [UIFont systemFontOfSize:16.0f];
+    leftButton.frame = CGRectMake(0, 0, 40, 18);
+    [leftButton sizeToFit];
+    
+    UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [rightButton setImage:[UIImage imageNamed:@"image"] forState:UIControlStateNormal];
+    [rightButton addTarget:self action:@selector(rightNavigationItemHandle:) forControlEvents:UIControlEventTouchUpInside];
+    rightButton.frame = CGRectMake(0, 0, 30, 30);
+    
+    UIBarButtonItem *leftMenuButton = [[UIBarButtonItem alloc] initWithCustomView:leftButton];
+    UIBarButtonItem *rightMenuButton = [[UIBarButtonItem alloc] initWithCustomView:rightButton];
+    
+    [self.navigationItem setLeftBarButtonItems:[NSArray arrayWithObjects: leftMenuButton, nil] animated:YES];
+    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects: rightMenuButton, nil] animated:YES];
+}
+
+#pragma mark - Button
+- (void)leftNavigationItemHandle:(id)sender {
+    
+    //TODO:leftNavigationItemHandle
+}
+
+- (void)rightNavigationItemHandle:(id)sender {
+    
+    //TODO:rightNavigationItemHandle
+}
+
+#pragma mark - UITableViewDataSource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
+    return 20;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSInteger row = indexPath.row;
+    NSInteger section = indexPath.section;
+    
+    static NSString *CellIdentifier = @"CellIdentifier";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (!cell) {
+        
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+                                      reuseIdentifier:CellIdentifier];
+    }
+    
+    //设置单元格不可点击
+//    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
+    //设置单元格线条占满宽度
+//    [cell setLayoutMargins:UIEdgeInsetsZero];
+//    [cell setSeparatorInset:UIEdgeInsetsZero];
+    
+    DLog(@"row:%@",@(row));
+    DLog(@"section:%@",@(section));
+    
+    return cell;
+}
+
+#pragma mark - UITableViewDelegate
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    return 80.0f;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    NSInteger section = indexPath.section;
+    NSInteger row = indexPath.row;
+    
+    DLog(@"row:%@",@(row));
+    DLog(@"section:%@",@(section));
+}
+
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+//
+//    return 5;
+//}
+//
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+//
+//    return 5;
+//}
+
+#pragma mark - UICollectionViewDataSource
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    
+    return 1;
+}
+
+//定义展示的UICollectionViewCell的个数
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    
+    return 20;
+}
+
+//每个UICollectionView展示的内容
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSInteger item = indexPath.item;
+    NSInteger section = indexPath.section;
+    
+    static NSString *CellIdentifier = @"CellIdentifier";
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    DLog(@"item:%@",@(item));
+    DLog(@"section:%@",@(section));
+    
+    
+    
+//    [self layerSettingWithView:cell borderWidth:1.0f borderColor:[[YYConstants sharedManager] YYProjectLightColor] cornerRadius:10.0f masksToBounds:YES];
+    
+    return cell;
+}
+
+#pragma mark - UICollectionViewDelegate
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    NSInteger item = indexPath.item;
+    NSInteger section = indexPath.section;
+    
+    DLog(@"item:%@",@(item));
+    DLog(@"section:%@",@(section));
+}
+
+
+#pragma mark - Segue
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+
+
+@end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

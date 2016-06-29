@@ -400,14 +400,26 @@
     }
 }
 
-- (NSMutableAttributedString *)attributedStringSetting:(NSString *)allStr rangeStr:(NSString *)rangeStr {
+
+
+- (NSMutableAttributedString *)attributedStringSetting:(NSString *)allStr rangeStr:(NSString *)rangeStr underLineFlag:(BOOL)flag {
     
-    return [self attributedStringSetting:allStr rangeStr:rangeStr textColor:[UIColor redColor]];
+    return [self attributedStringSetting:allStr rangeStr:rangeStr textColor:nil fontSize:nil underLineFlag:flag];
 }
 
-- (NSMutableAttributedString *)attributedStringSetting:(NSString *)allStr rangeStr:(NSString *)rangeStr textColor:(UIColor *)color {
+- (NSMutableAttributedString *)attributedStringSetting:(NSString *)allStr rangeStr:(NSString *)rangeStr textColor:(UIColor *)color fontSize:(UIFont *)font {
     
-    if (!rangeStr) {
+    return [self attributedStringSetting:allStr rangeStr:rangeStr textColor:color fontSize:font underLineFlag:NO];
+}
+
+- (NSMutableAttributedString *)attributedStringSetting:(NSString *)allStr rangeStr:(NSString *)rangeStr textColor:(UIColor *)color fontSize:(UIFont *)font underLineFlag:(BOOL)flag {
+    
+    if ([NSString isStringEmpty:allStr]) {
+        
+        allStr = @"";
+    }
+    
+    if ([NSString isStringEmpty:rangeStr]) {
         
         rangeStr = @"";
     }
@@ -415,11 +427,24 @@
     NSString *brandLabelStr = allStr;
     NSMutableAttributedString *brandLabelText = [[NSMutableAttributedString alloc] initWithString:brandLabelStr];
     NSRange brandLabelRange = [brandLabelStr rangeOfString:rangeStr];
-    [brandLabelText addAttribute:NSForegroundColorAttributeName value:color range:brandLabelRange];
+    
+    if (color) {
+        
+        [brandLabelText addAttribute:NSForegroundColorAttributeName value:color range:brandLabelRange];
+    }
+    
+    if (font) {
+        
+        [brandLabelText addAttribute:NSFontAttributeName value:font range:brandLabelRange];
+    }
+    
+    if (flag) {
+        
+        [brandLabelText addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:brandLabelRange];
+    }
     
     return brandLabelText;
 }
-
 
 
 
@@ -445,6 +470,7 @@
     
     view.layer.masksToBounds = masksToBounds;
 }
+
 
 
 
