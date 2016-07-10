@@ -19,6 +19,8 @@
 
 
 #import "NSString+YYString.h"
+#import "UIImage+YYImage.h"
+#import "UIView+YYView.h"
 #import "YYDataHandle.h"
 #import "YYCommunication.h"
 #import "YYConstants.h"

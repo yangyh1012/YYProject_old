@@ -382,6 +382,10 @@
     return self.view.frame.size.height/2.0 - 100;
 }
 
+
+//=======================================================================================================
+
+
 - (void)btnSettingBackgroundImageViewForBtn:(UIButton *)button urlStr:(NSString *)urlStr {
     
     [self btnSettingBackgroundImageViewForBtn:button urlStr:urlStr contentModeFlag:YES];
@@ -448,35 +452,12 @@
 
 
 
-- (void)layerSettingWithView:(UIView *)view borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor {
-    
-    [self layerSettingWithView:view borderWidth:borderWidth borderColor:borderColor cornerRadius:0 masksToBounds:YES];
-}
-
-- (void)layerSettingWithView:(UIView *)view borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor masksToBounds:(BOOL)masksToBounds {
-    
-    [self layerSettingWithView:view borderWidth:borderWidth borderColor:borderColor cornerRadius:0 masksToBounds:masksToBounds];
-}
-
-- (void)layerSettingWithView:(UIView *)view borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor cornerRadius:(CGFloat)cornerRadius masksToBounds:(BOOL)masksToBounds {
-    
-    view.layer.borderWidth = borderWidth;
-    view.layer.borderColor = borderColor.CGColor;
-    
-    if (cornerRadius != 0) {
-        
-        view.layer.cornerRadius = cornerRadius;
-    }
-    
-    view.layer.masksToBounds = masksToBounds;
-}
-
 
 
 
 - (NSString *)nullStrSetting:(NSString *)str {
     
-    if (!str) {
+    if (str == nil) {
         
         return @"";
     } else {
@@ -498,6 +479,10 @@
         return 1.0f;
     }
 }
+
+
+
+
 
 - (void)showDataEmptyTip:(NSString *)tip positionY:(CGFloat)y {
     

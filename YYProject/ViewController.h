@@ -12,3 +12,9 @@
 
 @end
 
+/**
+ *  专注界面控制器
+ */
+@interface AnotherViewController : YYBaseViewController
+
+@end

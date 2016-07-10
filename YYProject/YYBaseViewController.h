@@ -13,7 +13,7 @@
 
 @required
 
-- (void)testDelegateHandle:(nullable id)object;
+- (void)testDelegateHandle:(id)object;
 
 @optional
 
@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, YYBaseViewControllerTestType) {
 @interface YYBaseViewController : UIViewController
 
 
-@property (nullable, nonatomic, weak) id <YYBaseViewControllerTestDelegate> testDelegate;
+@property (nonatomic, weak) id <YYBaseViewControllerTestDelegate> testDelegate;
 
 @property (nonatomic, assign) YYBaseViewControllerTestType baseViewControllerTestType;
 
@@ -42,9 +42,9 @@ typedef NS_ENUM(NSInteger, YYBaseViewControllerTestType) {
  *  @param button 按钮
  *  @param urlStr 网址字符串
  */
-- (void)btnSettingBackgroundImageViewForBtn:(nullable UIButton *)button urlStr:(nullable NSString *)urlStr;
+- (void)btnSettingBackgroundImageViewForBtn:(UIButton *)button urlStr:(NSString *)urlStr;
 
-- (void)btnSettingBackgroundImageViewForBtn:(nullable UIButton *)button urlStr:(nullable NSString *)urlStr contentModeFlag:(BOOL)flag;
+- (void)btnSettingBackgroundImageViewForBtn:(UIButton *)button urlStr:(NSString *)urlStr contentModeFlag:(BOOL)flag;
 
 
 
@@ -57,48 +57,47 @@ typedef NS_ENUM(NSInteger, YYBaseViewControllerTestType) {
  *
  *  @return 处理后的富文本
  */
-- (nullable NSMutableAttributedString *)attributedStringSetting:(nullable NSString *)allStr rangeStr:(nullable NSString *)rangeStr underLineFlag:(BOOL)flag;
+- (NSMutableAttributedString *)attributedStringSetting:(NSString *)allStr rangeStr:(NSString *)rangeStr underLineFlag:(BOOL)flag;
 
-- (nullable NSMutableAttributedString *)attributedStringSetting:(nullable NSString *)allStr rangeStr:(nullable NSString *)rangeStr textColor:(nullable UIColor *)color fontSize:(nullable UIFont *)font;
+- (NSMutableAttributedString *)attributedStringSetting:(NSString *)allStr rangeStr:(NSString *)rangeStr textColor:(UIColor *)color fontSize:(UIFont *)font;
 
-- (nullable NSMutableAttributedString *)attributedStringSetting:(nullable NSString *)allStr rangeStr:(nullable NSString *)rangeStr textColor:(nullable UIColor *)color fontSize:(nullable UIFont *)font underLineFlag:(BOOL)flag;
-
-/**
- *  添加视图边框
- *
- *  @param view        需要添加边框的视图
- *  @param borderWidth 边框宽度
- *  @param borderColor 边框颜色
- */
-- (void)layerSettingWithView:(nullable UIView *)view borderWidth:(CGFloat)borderWidth borderColor:(nullable UIColor *)borderColor;
-
-- (void)layerSettingWithView:(nullable UIView *)view borderWidth:(CGFloat)borderWidth borderColor:(nullable UIColor *)borderColor masksToBounds:(BOOL)masksToBounds;
-
-- (void)layerSettingWithView:(nullable UIView *)view borderWidth:(CGFloat)borderWidth borderColor:(nullable UIColor *)borderColor cornerRadius:(CGFloat)cornerRadius masksToBounds:(BOOL)masksToBounds;
+- (NSMutableAttributedString *)attributedStringSetting:(NSString *)allStr rangeStr:(NSString *)rangeStr textColor:(UIColor *)color fontSize:(UIFont *)font underLineFlag:(BOOL)flag;
 
 
 
 
-- (void)requestResult:(nullable id)responseObject URLString:(nullable NSString *)URLString otherParams:(nullable id)otherParams;
+- (void)requestResult:(id)responseObject URLString:(NSString *)URLString otherParams:(id)otherParams;
 
-- (void)requestFailure:(nullable NSString *)URLString error:(nullable NSError *)error otherParams:(nullable id)otherParams;
+- (void)requestFailure:(NSString *)URLString error:(NSError *)error otherParams:(id)otherParams;
 
 
 
 
 - (CGFloat)multiplesForPhone;
 
-- (nullable NSString *)nullStrSetting:(nullable NSString *)str;
+- (NSString *)nullStrSetting:(NSString *)str;
 
 
-
-- (void)showDataEmptyTip:(nullable NSString *)tip positionY:(CGFloat)y;
+/**
+ *  当没有数据时，显示提示框
+ *
+ *  @param tip 提示的文字
+ *  @param y   提示框的纵坐标
+ */
+- (void)showDataEmptyTip:(NSString *)tip positionY:(CGFloat)y;
 
 - (void)hideDataEmptyTip;
 
 
-
-- (void)showHUDWithText:(nullable NSString *)text mode:(MBProgressHUDMode)mode yOffset:(CGFloat)yOffset font:(CGFloat)fontSize;
+/**
+ *  显示加载提示框
+ *
+ *  @param text     提示文字
+ *  @param mode     提示框样式（MBProgressHUDModeIndeterminate，MBProgressHUDModeText）
+ *  @param yOffset  提示框的纵坐标
+ *  @param fontSize 提示框的文字大小
+ */
+- (void)showHUDWithText:(NSString *)text mode:(MBProgressHUDMode)mode yOffset:(CGFloat)yOffset font:(CGFloat)fontSize;
 
 - (void)hide:(BOOL)animated;
 
