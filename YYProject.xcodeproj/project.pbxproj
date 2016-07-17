@@ -28,7 +28,6 @@
 		A05ADF8D1D1BDB180003A60F /* YYTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A05ADF8C1D1BDB180003A60F /* YYTableViewCell.m */; };
 		A05ADF901D1BDB2D0003A60F /* YYCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A05ADF8F1D1BDB2D0003A60F /* YYCollectionViewCell.m */; };
 		A0F26E9E1CAED5ED00CCACAB /* UIImage+YYImage.m in Sources */ = {isa = PBXBuildFile; fileRef = A0F26E9D1CAED5ED00CCACAB /* UIImage+YYImage.m */; };
-		B0FCB1F4F8C80D8201D75FD6 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E7CDFE8E2531C8899DD21D5 /* libPods.a */; };
 		D72F10981D32395700CE5D9E /* UIView+YYView.m in Sources */ = {isa = PBXBuildFile; fileRef = D72F10971D32395700CE5D9E /* UIView+YYView.m */; };
 /* End PBXBuildFile section */
 
@@ -51,7 +50,7 @@
 
 /* Begin PBXFileReference section */
 		2A814B11DD11026094149072 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		9E7CDFE8E2531C8899DD21D5 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		38FA24DC57FC0CACB42267E6 /* Pods-YYProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YYProject.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YYProject/Pods-YYProject.debug.xcconfig"; sourceTree = "<group>"; };
 		A00BC0431C942CF1004391D6 /* YYProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YYProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A00BC0471C942CF1004391D6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A00BC0491C942CF1004391D6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -97,6 +96,7 @@
 		D72F10961D32395700CE5D9E /* UIView+YYView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+YYView.h"; sourceTree = "<group>"; };
 		D72F10971D32395700CE5D9E /* UIView+YYView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+YYView.m"; sourceTree = "<group>"; };
 		DFD9365E3D7139116030CD89 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		F0116462BBFAB6FD58C0AA45 /* Pods-YYProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YYProject.release.xcconfig"; path = "Pods/Target Support Files/Pods-YYProject/Pods-YYProject.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,7 +104,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B0FCB1F4F8C80D8201D75FD6 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,6 +252,8 @@
 			children = (
 				2A814B11DD11026094149072 /* Pods.debug.xcconfig */,
 				DFD9365E3D7139116030CD89 /* Pods.release.xcconfig */,
+				38FA24DC57FC0CACB42267E6 /* Pods-YYProject.debug.xcconfig */,
+				F0116462BBFAB6FD58C0AA45 /* Pods-YYProject.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -284,7 +285,6 @@
 		C5764D98F5479ADBF19A5FE3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9E7CDFE8E2531C8899DD21D5 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -305,12 +305,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A00BC0701C942CF2004391D6 /* Build configuration list for PBXNativeTarget "YYProject" */;
 			buildPhases = (
-				7DF497738D297385F7E1210C /* Check Pods Manifest.lock */,
+				7DF497738D297385F7E1210C /* [CP] Check Pods Manifest.lock */,
 				A00BC03F1C942CF1004391D6 /* Sources */,
 				A00BC0401C942CF1004391D6 /* Frameworks */,
 				A00BC0411C942CF1004391D6 /* Resources */,
-				3D3045EBDB2F28575DBEE02E /* Embed Pods Frameworks */,
-				05FBD1F0E5B49D348BE320EA /* Copy Pods Resources */,
+				3D3045EBDB2F28575DBEE02E /* [CP] Embed Pods Frameworks */,
+				05FBD1F0E5B49D348BE320EA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -431,44 +431,44 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		05FBD1F0E5B49D348BE320EA /* Copy Pods Resources */ = {
+		05FBD1F0E5B49D348BE320EA /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YYProject/Pods-YYProject-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		3D3045EBDB2F28575DBEE02E /* Embed Pods Frameworks */ = {
+		3D3045EBDB2F28575DBEE02E /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YYProject/Pods-YYProject-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7DF497738D297385F7E1210C /* Check Pods Manifest.lock */ = {
+		7DF497738D297385F7E1210C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -635,12 +635,12 @@
 		};
 		A00BC0711C942CF2004391D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2A814B11DD11026094149072 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 38FA24DC57FC0CACB42267E6 /* Pods-YYProject.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				GCC_PREFIX_HEADER = YYProject/PrefixHeader.pch;
 				INFOPLIST_FILE = YYProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yangyh1012.YYProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -649,12 +649,12 @@
 		};
 		A00BC0721C942CF2004391D6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DFD9365E3D7139116030CD89 /* Pods.release.xcconfig */;
+			baseConfigurationReference = F0116462BBFAB6FD58C0AA45 /* Pods-YYProject.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				GCC_PREFIX_HEADER = YYProject/PrefixHeader.pch;
 				INFOPLIST_FILE = YYProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yangyh1012.YYProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";

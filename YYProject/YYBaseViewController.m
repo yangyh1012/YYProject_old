@@ -92,6 +92,12 @@
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];
     }
+    
+    
+    self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
