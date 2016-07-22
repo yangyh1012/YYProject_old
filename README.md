@@ -1,8 +1,8 @@
 # YYProject 基础工程
-简介：这个一个基础工程，包含了model、db、net、tools还有一个baseController。
+简介：这是一个基础工程，包含了model、db、net、tools还有一个baseController。
 
 # 谁使用它
-任何iOS开发人员都可以使用它。
+任何iOS开发人员（工程语言是Objective-C）都可以使用它。
 
 #怎么解决编译错误
 下载源代码，下载完之后，工程会报一些编译错误，这是因为我使用了一些第三方的类库。如果你之前知道[CocoaPods](http://www.cocoachina.com/ios/20140107/7663.html)这个东西。那么，在工程中，你可以找到“Podfile副本”文件，将名称改为“Podfile”，然后用控制台进入此目录，输入命令“pod update”就可以下载安装CocoaPods和里面提供所有类库。
