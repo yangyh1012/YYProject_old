@@ -25,7 +25,7 @@ typedef NS_ENUM(NSInteger, YYBaseViewControllerTestType) {
     YYBaseViewControllerTestType2,
 };
 
-@interface YYBaseViewController : UIViewController
+@interface YYBaseViewController : UIViewController<YYCommunicationDelegate>
 
 
 @property (nonatomic, weak) id <YYBaseViewControllerTestDelegate> testDelegate;

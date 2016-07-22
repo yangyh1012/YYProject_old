@@ -50,13 +50,16 @@ extern NSString *const YYProjectHUDLoadTipText;
 
 //***************************http请求通知名称定义 start***************************************//
 
-extern NSString *const YYNotificationKey;
-
 extern NSString *const YYNotificationLoginFirst;
 
 extern NSString *const YYNotificationPageLoad;
 
 extern NSString *const YYTestNotification;
+
+
+extern NSString *const YYNotificationKey;
+
+extern NSString *const YYLocationNotification;
 
 //***************************http请求通知名称定义 end***************************************//
 

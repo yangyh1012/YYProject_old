@@ -9,7 +9,7 @@
 #import "YYBaseViewController.h"
 #import "YYTestData.h"
 
-@interface YYBaseViewController ()<YYCommunicationDelegate,MBProgressHUDDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface YYBaseViewController ()<YYCommunicationDelegate,MBProgressHUDDelegate>
 
 @property (nullable, nonatomic, strong) UITableView *tableView1;
 
@@ -41,75 +41,70 @@
     // command+ctrl+← 跳到上一个页面
     // command+ctrl+↑ h文件和m文件互换
     // command+shift+J 打开文件导航
-    //
-    //
-    //
     
-    BOOL flag = NO;
+    self.automaticallyAdjustsScrollViewInsets = NO;//去掉多余的滚动间距
     
-    //添加视图
-    if (flag) {
+    [YYCommunication sharedManager].delegate = self;//网络请求代理
+    
+    self.navigationController.navigationBar.translucent = NO;//去掉导航透明
+    
+    self.tabBarController.tabBar.translucent = NO;//去掉底部透明
+    
+    
+    
+    {
+        BOOL flag = NO;
         
-        //添加导航条
-        [self addNavItem];
+        //数据初始化
+        if (flag) {
         
-        //添加表格
-        [self addTableView];
-    }
-    
-    //数据初始化
-    if (flag) {
-    
-        self.title = @"这是标题";
+            self.title = @"这是标题";
+            
+            self.pageNum = YYProjectStartPage;
+            
+            [YYCommunication sharedManager].delegate = self;
+        }
         
-        self.pageNum = YYProjectStartPage;
+        //数据请求
+        if (flag) {
         
-        [YYCommunication sharedManager].delegate = self;
-    }
-    
-    //数据请求
-    if (flag) {
-    
-        [self requestDataList:nil otherParams:nil];
-    }
-    
-    //添加通知
-    if (flag) {
-     
-        //注册键盘出现通知
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillShow:)
-                                                     name:UIKeyboardWillShowNotification object:nil];
-        //注册键盘隐藏通知
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillHide:)
-                                                     name:UIKeyboardWillHideNotification object:nil];
-    }
-    
-    if (flag) {
+            [self requestDataList:nil otherParams:nil];
+        }
         
-        //可以使界面的View的frame有值
-        [self.view setNeedsLayout];
-        [self.view layoutIfNeeded];
+        //添加通知
+        if (flag) {
+         
+            //注册键盘出现通知
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(keyboardWillShow:)
+                                                         name:UIKeyboardWillShowNotification object:nil];
+            //注册键盘隐藏通知
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(keyboardWillHide:)
+                                                         name:UIKeyboardWillHideNotification object:nil];
+        }
+        
+        if (flag) {
+            
+            //可以使界面的View的frame有值
+            [self.view setNeedsLayout];
+            [self.view layoutIfNeeded];
+        }
     }
-    
-    
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    
-    
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     
     [super viewWillAppear:animated];
     
-    BOOL flag = NO;
-    if (flag) {
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(notificationTestHandle:)
-                                                     name:YYTestNotification object:nil];
+    {
+        BOOL flag = NO;
+        if (flag) {
+            
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(notificationTestHandle:)
+                                                         name:YYTestNotification object:nil];
+        }
     }
 }
 
@@ -117,11 +112,13 @@
     
     [super viewWillDisappear:animated];
     
-    BOOL flag = NO;
-    if (flag) {
-        
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:YYTestNotification object:nil];
+    {
+        BOOL flag = NO;
+        if (flag) {
+            
+            [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                            name:YYTestNotification object:nil];
+        }
     }
 }
 
@@ -133,20 +130,23 @@
 
 - (void)dealloc {
     
-    [YYCommunication sharedManager].delegate = nil;
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];//去掉动作
+    [YYCommunication sharedManager].delegate = nil;//去除代理
+    [[NSNotificationCenter defaultCenter] removeObserver:self];//去除通知
+    [self hide:NO];//去除提示框
     
-    BOOL flag = NO;
-    if (flag) {
-     
-        //解除键盘出现通知
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:UIKeyboardWillShowNotification object:nil];
-        //解除键盘隐藏通知
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:UIKeyboardWillHideNotification object:nil];
+    {
+        BOOL flag = NO;
+        if (flag) {
+         
+            //解除键盘出现通知
+            [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                            name:UIKeyboardWillShowNotification object:nil];
+            //解除键盘隐藏通知
+            [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                            name:UIKeyboardWillHideNotification object:nil];
+        }
     }
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -156,49 +156,6 @@
 }
 
 #pragma mark - View Init
-
-- (void)addNavItem {
-    
-    UIButton *leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [leftButton setTitle:@"厦门" forState:UIControlStateNormal];
-    [leftButton addTarget:self action:@selector(leftNavigationItemHandle:) forControlEvents:UIControlEventTouchUpInside];
-    leftButton.frame = CGRectMake(0, 0, 40, 18);
-    [leftButton sizeToFit];
-    
-    UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [rightButton setImage:[UIImage imageNamed:@"image"] forState:UIControlStateNormal];
-    [rightButton addTarget:self action:@selector(rightNavigationItemHandle:) forControlEvents:UIControlEventTouchUpInside];
-    rightButton.frame = CGRectMake(0, 0, 30, 30);
-    
-    UIBarButtonItem *leftMenuButton = [[UIBarButtonItem alloc] initWithCustomView:leftButton];
-    UIBarButtonItem *rightMenuButton = [[UIBarButtonItem alloc] initWithCustomView:rightButton];
-    
-    [self.navigationItem setLeftBarButtonItems:[NSArray arrayWithObjects: leftMenuButton, nil] animated:YES];
-    [self.navigationItem setRightBarButtonItems:[NSArray arrayWithObjects: rightMenuButton, nil] animated:YES];
-}
-
-- (void)addTableView {
-    
-    self.tableView1.delegate = self;
-    self.tableView1.dataSource = self;
-    
-    //去掉多余的分割线
-    self.tableView1.tableFooterView = [[UIView alloc] init];
-    
-    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadArticleListData方法）
-    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadListDataForStart)];
-    header.automaticallyChangeAlpha = YES;// 设置自动切换透明度(在导航栏下面自动隐藏)
-    header.lastUpdatedTimeLabel.hidden = YES;// 隐藏时间
-    [header beginRefreshing];// 马上进入刷新状态
-    self.tableView1.mj_header = header;// 设置header
-    
-    // 上拉刷新
-    __weak YYBaseViewController *wself = self;
-    self.tableView1.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-        
-        [wself loadListDataForMore];
-    }];
-}
 
 - (void)navigationSetting {
     
@@ -233,8 +190,6 @@
     self.navigationController.navigationBar.translucent = NO;
 }
 
-
-
 #pragma mark - Request
 
 /**
@@ -258,7 +213,7 @@
     [[YYCommunication sharedManager] httpRequest:YYProjectBaseUrl parameters:requestParams otherParams:otherParams mode:YYCommunicationModePost];
 }
 
-- (void)requestResult:(nullable id)responseObject URLString:(nullable NSString *)URLString otherParams:(nullable id)otherParams {
+- (void)requestResult:(id)responseObject URLString:(NSString *)URLString otherParams:(id)otherParams {
     
     NSNumber *responseStatus = (NSNumber *)[[responseObject objectForKey:@"status"] objectForKey:@"succeed"];
     
@@ -274,11 +229,11 @@
     }
 }
 
-- (void)requestFailure:(NSString *)URLString error:(nullable NSError *)error otherParams:(id)otherParams {
+- (void)requestFailure:(NSString *)URLString error:(NSError *)error otherParams:(id)otherParams {
     
     //打印错误信息
     [self showHUDWithText:[NSString codeDescription:[error code]] mode:MBProgressHUDModeText yOffset:[self HUDOffsetY] font:YYProjectHUDTipTextFont];
-    [self.HUD hide:YES afterDelay:YYProjectHUDTipTime];
+    [self hide:YES afterDelay:YYProjectHUDTipTime];
     
     if ([otherParams objectForKey:YYNotificationPageLoad]) {
         
@@ -298,12 +253,12 @@
             [self performSelector:@selector(showLogin:) withObject:nil afterDelay:YYProjectHUDTipTime];
         } else {
             
-            [self.HUD hide:YES afterDelay:YYProjectHUDTipTime];
+            [self hide:YES afterDelay:YYProjectHUDTipTime];
         }
         
     } else {
         
-        [self.HUD hide:YES afterDelay:YYProjectHUDTipTime];
+        [self hide:YES afterDelay:YYProjectHUDTipTime];
     }
     
     if ([otherParams objectForKey:YYNotificationPageLoad]) {
@@ -317,23 +272,11 @@
     
 }
 
-#pragma mark - Button
-
-- (void)leftNavigationItemHandle:(id)sender {
-    
-    
-}
-
-- (void)rightNavigationItemHandle:(id)sender {
-    
-    
-}
-
 #pragma mark - Action
 
 - (void)showLogin:(id)sender {
     
-    [self.HUD hide:YES];
+    [self hide:YES];
     [[YYDataHandle sharedManager] setUserDefaultStringValue:@"" WithKey:YYProjectSid];
     [self performSegueWithIdentifier:@"showLogin" sender:nil];
 }
@@ -383,10 +326,7 @@
     }
 }
 
-- (CGFloat)HUDOffsetY {
-    
-    return self.view.frame.size.height/2.0 - 100;
-}
+
 
 
 //=======================================================================================================
@@ -409,6 +349,9 @@
         button.imageView.contentMode = UIViewContentModeScaleAspectFit;
     }
 }
+
+
+
 
 
 
@@ -490,6 +433,7 @@
 
 
 
+
 - (void)showDataEmptyTip:(NSString *)tip positionY:(CGFloat)y {
     
     if (!self.dataEmptyTipLabel) {
@@ -519,7 +463,7 @@
         //打印错误信息
         NSError *error = (NSError *)[notification object];
         [self showHUDWithText:[NSString codeDescription:[error code]] mode:MBProgressHUDModeText yOffset:[self HUDOffsetY] font:YYProjectHUDTipTextFont];
-        [self.HUD hide:YES afterDelay:YYProjectHUDTipTime];
+        [self hide:YES afterDelay:YYProjectHUDTipTime];
         
     } else {
         
@@ -540,12 +484,12 @@
                 
             } else {
                 
-                [self.HUD hide:YES afterDelay:YYProjectHUDTipTime];
+                [self hide:YES afterDelay:YYProjectHUDTipTime];
             }
             
         } else {//成功
             
-            [self.HUD hide:YES];
+            [self hide:YES];
             
             NSArray *array = (NSArray *)[responseObject objectForKey:@"data"];
             
@@ -570,7 +514,7 @@
         
         NSError *error = (NSError *)[notification object];
         [self showHUDWithText:[NSString codeDescription:[error code]] mode:MBProgressHUDModeText yOffset:[self HUDOffsetY] font:YYProjectHUDTipTextFont];
-        [self.HUD hide:YES afterDelay:YYProjectHUDTipTime];
+        [self hide:YES afterDelay:YYProjectHUDTipTime];
         
         [self stopLoadingAndPageInit];
         
@@ -591,14 +535,14 @@
                 
             } else {
                 
-                [self.HUD hide:YES afterDelay:YYProjectHUDTipTime];
+                [self hide:YES afterDelay:YYProjectHUDTipTime];
             }
             
             [self stopLoadingAndPageInit];
             
         } else {//成功
             
-            [self.HUD hide:YES];
+            [self hide:YES];
             
             if (self.pageNum <= YYProjectStartPage) {
                 
@@ -661,64 +605,6 @@
 //    [self updateViewConstraints];
 }
 
-#pragma mark - UITableViewDataSource
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
-    return [self.datas count];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    NSInteger row = indexPath.row;
-    NSInteger section = indexPath.section;
-    
-    static NSString *CellIdentifier = @"CellIdentifier";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                      reuseIdentifier:CellIdentifier];
-    }
-    
-    DLog(@"row:%@",@(row));
-    DLog(@"section:%@",@(section));
-    
-    return cell;
-}
-
-#pragma mark - UITableViewDelegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    return 80.0f;
-}
-
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-//    
-//    return 5;
-//}
-//
-//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-//    
-//    return 5;
-//}
-//
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    
-//    NSInteger section = indexPath.section;
-//    NSInteger row = indexPath.row;
-//    
-//    DLog(@"row:%@",@(row));
-//    DLog(@"section:%@",@(section));
-//}
-
 #pragma mark - MBProgressHUDDelegate
 
 - (void)showHUDWithText:(NSString *)text mode:(MBProgressHUDMode)mode yOffset:(CGFloat)yOffset font:(CGFloat)fontSize {
@@ -757,6 +643,11 @@
     
     [self.HUD removeFromSuperview];
     self.HUD = nil;
+}
+
+- (CGFloat)HUDOffsetY {
+    
+    return self.view.frame.size.height/2.0 - 100;
 }
 
 #pragma mark - UITextFieldDelegate

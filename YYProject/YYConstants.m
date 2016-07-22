@@ -44,7 +44,10 @@ NSString *const YYNotificationLoginFirst = @"YYTestNotification_YYNotificationLo
 
 NSString *const YYNotificationPageLoad = @"YYTestNotification_YYNotificationPageLoad";
 
-NSString *const YYNotificationKey = @"YYTestNotification_YYNotificationKey";
+
+NSString *const YYNotificationKey = @"YYNotification_YYNotificationKey";
+
+NSString *const YYLocationNotification = @"YYLocationNotification";
 
 //***************************http请求通知名称定义 end***************************************//
 

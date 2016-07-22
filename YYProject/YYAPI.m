@@ -9,7 +9,10 @@
 #import "YYAPI.h"
 
 //***************************http请求定义 start***************************************//
+
 NSString *const YYProjectBaseUrl = @"unknowName";
+
+NSString *const YYLocationUrl = @"http://7xpso2.com1.z0.glb.clouddn.com/cities.txt";
 
 //***************************http请求定义 end***************************************//
 

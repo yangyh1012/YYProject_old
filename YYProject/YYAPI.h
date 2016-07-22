@@ -9,7 +9,10 @@
 #import <Foundation/Foundation.h>
 
 //***************************http请求定义 start***************************************//
+
 extern NSString *const YYProjectBaseUrl;
+
+extern NSString *const YYLocationUrl;
 
 //***************************http请求定义 end***************************************//
 

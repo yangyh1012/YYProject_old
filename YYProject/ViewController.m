@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "YYTestData.h"
 
-@interface ViewController ()<YYCommunicationDelegate,MBProgressHUDDelegate,UITableViewDataSource,UITableViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
+@interface ViewController ()<YYCommunicationDelegate,MBProgressHUDDelegate>
 
 @property (nonatomic, strong) NSMutableArray *datas;
 
@@ -27,54 +27,61 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-//    DLog(@"我是谁？");
-//    
-//    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(50, 50, 60, 70)];
-//    [self.view addSubview:view];
-//    [view borderWidth:3 borderColor:[UIColor blueColor] cornerRadius:5 masksToBounds:YES];
+    //============================数据初始化============================
     
-    [self viewLoadSettingForTitle:@"这是标题" navItemFlag:NO tableFlag:YES tablePageFlag:NO collectionFlag:NO collectionPageFlag:NO requestFlag:NO keyboardFlag:NO];
+    self.title = @"这是标题";
+    
+    //============================数据请求============================
+    
+    BOOL requestFlag = NO;
+    if (requestFlag) {
+        
+        NSMutableDictionary *params = nil;
+        NSMutableDictionary *otherParams = [[NSMutableDictionary alloc] initWithObjectsAndKeys:YYLocationNotification,YYNotificationKey, nil];
+        [self requestDataList:params otherParams:otherParams];
+    }
+    
+    [self viewLoadSettingForTitle:@"这是标题"
+                      navItemFlag:NO
+                        tableFlag:NO
+                    tablePageFlag:NO
+                   collectionFlag:NO
+               collectionPageFlag:NO
+                      requestFlag:NO
+                     keyboardFlag:NO];
 }
 
-- (void)viewLoadSettingForTitle:(NSString *)title navItemFlag:(BOOL)navItemFlag tableFlag:(BOOL)tableFlag tablePageFlag:(BOOL)tablePageFlag  collectionFlag:(BOOL)collectionFlag collectionPageFlag:(BOOL)collectionPageFlag requestFlag:(BOOL)requestFlag keyboardFlag:(BOOL)keyboardFlag {
+- (void)viewLoadSettingForTitle:(NSString *)title
+                    navItemFlag:(BOOL)navItemFlag
+                      tableFlag:(BOOL)tableFlag
+                  tablePageFlag:(BOOL)tablePageFlag
+                 collectionFlag:(BOOL)collectionFlag
+             collectionPageFlag:(BOOL)collectionPageFlag
+                    requestFlag:(BOOL)requestFlag
+                   keyboardFlag:(BOOL)keyboardFlag {
     
     //============================添加视图============================
     
-//    BOOL navItemFlag = NO;
     if (navItemFlag) {
         
         //添加导航条
         [self addNavItem];
     }
     
-    
-//    BOOL tableFlag = YES;
-//    BOOL tablePageFlag = NO;
     if (tableFlag) {
         
         //添加表格
         [self addTableView:tablePageFlag];
     }
     
-    
-//    BOOL collectionFlag = NO;
-//    BOOL collectionPageFlag = NO;
     if (collectionFlag) {
         
         //添加集合视图
         [self addCollectionView:collectionPageFlag];
     }
     
-    //============================数据初始化============================
-    
-//    self.title = @"这是标题";
-    self.title = title;
-    [YYCommunication sharedManager].delegate = self;
-    
-    
     //============================数据请求============================
     
-//    BOOL requestFlag = NO;
     if (requestFlag) {
         
         NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"sd_id",@"sd_id", nil];
@@ -84,7 +91,6 @@
     
     //============================添加通知============================
     
-//    BOOL keyboardFlag = NO;
     if (keyboardFlag) {
         
         //注册键盘出现通知
@@ -159,8 +165,8 @@
 
 - (void)addTableView:(BOOL)tablePageFlag {
     
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
+//    self.tableView.delegate = self;
+//    self.tableView.dataSource = self;
     
     //不要分割线
     //self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -184,7 +190,7 @@
         self.tableView.mj_header = header;// 设置header
         
         // 上拉刷新
-        __weak ViewController *wself = self;
+        __weak __typeof(self)wself = self;
         self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
             
             [wself loadListDataForMore];
@@ -201,8 +207,8 @@
     collectionViewFlowLayout.minimumInteritemSpacing = 10 * [self multiplesForPhone];
     collectionViewFlowLayout.sectionInset = UIEdgeInsetsMake(0, 10 * [self multiplesForPhone], 0, 10 * [self multiplesForPhone]);
     
-    self.collectionView.delegate = self;
-    self.collectionView.dataSource = self;
+//    self.collectionView.delegate = self;
+//    self.collectionView.dataSource = self;
     
     self.collectionView.collectionViewLayout = collectionViewFlowLayout;
     
@@ -218,7 +224,7 @@
         self.collectionView.mj_header = header;// 设置header
         
         // 上拉刷新
-        __weak ViewController *wself = self;
+        __weak __typeof(self)wself = self;
         self.collectionView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
             
             [wself loadListDataForMore];
@@ -256,7 +262,7 @@
 
 - (void)faceImageBtnHandle:(id)sender {
     
-    __weak ViewController *wself = self;//防止循环引用
+    __weak __typeof(self)wself = self;//防止循环引用
     
     if (!self.faceImageAlertController) {
         
@@ -319,7 +325,6 @@
 
 - (void)backHandle {
     
-    [self hide:YES];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -328,7 +333,7 @@
 - (void)requestDataList:(id)requestParams otherParams:(id)otherParams {
     
     [self showHUDWithText:YYProjectHUDRequestTipText mode:MBProgressHUDModeIndeterminate yOffset:0 font:YYProjectHUDLoadTextFont];
-    [[YYCommunication sharedManager] httpRequest:YYProjectBaseUrl parameters:requestParams otherParams:otherParams mode:YYCommunicationModePost];
+    [[YYCommunication sharedManager] httpRequest:YYLocationUrl parameters:requestParams otherParams:otherParams mode:YYCommunicationModePost];
 }
 
 - (void)requestSuccess:(id)responseObject otherParams:(id)otherParams {
@@ -404,9 +409,24 @@
         [self showHUDWithText:responseTip mode:MBProgressHUDModeText yOffset:[self HUDOffsetY] font:YYProjectHUDTipTextFont];
         [self performSelector:@selector(backHandle) withObject:nil afterDelay:YYProjectHUDTipTime];
         
-    } else if ([notificationName isEqualToString:@""]) {
+    } else if ([notificationName isEqualToString:YYLocationNotification]) {
         
+        [self hide:YES];
         
+        NSArray *datas = (NSArray *)[responseObject objectForKey:@"allcity"];
+        DLog(@"datas:%@",datas);
+    }
+}
+
+- (void)requestFailure:(NSString *)URLString error:(nullable NSError *)error otherParams:(id)otherParams {
+    
+    NSString *notificationName = [otherParams objectForKey:YYNotificationKey];
+    
+    if ([notificationName isEqualToString:YYLocationNotification]) {
+     
+        //打印错误信息
+        [self showHUDWithText:[NSString codeDescription:[error code]] mode:MBProgressHUDModeText yOffset:[self HUDOffsetY] font:YYProjectHUDTipTextFont];
+        [self hide:YES afterDelay:YYProjectHUDTipTime];
     }
 }
 
@@ -444,114 +464,6 @@
 //    [self updateViewConstraints];
 }
 
-#pragma mark - UITableViewDataSource
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
-    return [self.datas count];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    NSInteger row = indexPath.row;
-    NSInteger section = indexPath.section;
-    
-    static NSString *CellIdentifier = @"CellIdentifier";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
-                                      reuseIdentifier:CellIdentifier];
-    }
-    
-    //设置单元格不可点击
-//    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    DLog(@"row:%@",@(row));
-    DLog(@"section:%@",@(section));
-    
-    return cell;
-}
-
-#pragma mark - UITableViewDelegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    return 80.0f;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    NSInteger section = indexPath.section;
-    NSInteger row = indexPath.row;
-    
-    DLog(@"row:%@",@(row));
-    DLog(@"section:%@",@(section));
-}
-
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-//
-//    return 5;
-//}
-//
-//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-//
-//    return 5;
-//}
-
-
-#pragma mark - UICollectionViewDelegate
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    NSInteger item = indexPath.item;
-    NSInteger section = indexPath.section;
-    
-    DLog(@"item:%@",@(item));
-    DLog(@"section:%@",@(section));
-}
-
-#pragma mark - UICollectionViewDataSource
-
-//定义展示的Section的个数
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    
-    return 1;
-}
-
-//定义展示的UICollectionViewCell的个数
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    
-    return [self.datas count];
-}
-
-//每个UICollectionView展示的内容
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    NSInteger item = indexPath.item;
-    NSInteger section = indexPath.section;
-    
-    static NSString *CellIdentifier = @"CellIdentifier";
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    DLog(@"item:%@",@(item));
-    DLog(@"section:%@",@(section));
-    
-    //设置圆角、边框、边框颜色
-    cell.layer.borderWidth = 1.0f;
-    cell.layer.borderColor = [[YYConstants sharedManager] YYProjectLightColor].CGColor;
-    cell.layer.cornerRadius = 10.0f;
-    cell.layer.masksToBounds = YES;
-    
-    return cell;
-}
-
 #pragma mark - StoryboardSegue
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -580,8 +492,7 @@
 
 
 
-
-
+#pragma mark - New ViewController
 
 @interface AnotherViewController ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
 //<UITableViewDataSource,UITableViewDelegate>
@@ -638,6 +549,7 @@
 }
 
 #pragma mark - ViewInit
+
 - (void)addNavItem {
     
     UIButton *leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -660,6 +572,7 @@
 }
 
 #pragma mark - Button
+
 - (void)leftNavigationItemHandle:(id)sender {
     
     //TODO:leftNavigationItemHandle
@@ -671,6 +584,7 @@
 }
 
 #pragma mark - UITableViewDataSource
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
     return 1;
@@ -708,6 +622,7 @@
 }
 
 #pragma mark - UITableViewDelegate
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     return 80.0f;
@@ -735,6 +650,7 @@
 //}
 
 #pragma mark - UICollectionViewDataSource
+
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     
     return 1;
@@ -766,6 +682,7 @@
 }
 
 #pragma mark - UICollectionViewDelegate
+
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     
     NSInteger item = indexPath.item;
@@ -777,6 +694,7 @@
 
 
 #pragma mark - Segue
+
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
