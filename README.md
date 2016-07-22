@@ -5,8 +5,8 @@
 任何iOS开发人员（工程语言是Objective-C）都可以使用它。
 
 #怎么解决编译错误
-首先，不要抱怨工程下载完后，为什么还有错误，为什么不能直接运行？毕竟，解决编译错误是一个开发人员应该做的。
-下载源代码，下载完之后，工程会报一些编译错误，这是因为我使用了一些第三方的类库。如果你之前知道[CocoaPods](http://www.cocoachina.com/ios/20140107/7663.html)这个东西。那么，在工程中，你可以找到“Podfile副本”文件，将名称改为“Podfile”，然后用控制台进入此目录，输入命令“pod update”就可以下载安装CocoaPods和里面提供所有类库。
+* 首先，不要抱怨工程下载完后，为什么还有错误，为什么不能直接运行？毕竟，解决编译错误是一个开发人员应该做的。
+* 下载源代码，下载完之后，工程会报一些编译错误，这是因为我使用了一些第三方的类库。如果你之前知道[CocoaPods](http://www.cocoachina.com/ios/20140107/7663.html)这个东西。那么，在工程中，你可以找到“Podfile副本”文件，将名称改为“Podfile”，然后用控制台进入此目录，输入命令“pod update”就可以下载安装CocoaPods和里面提供所有类库。
 
 #Podfile包含了哪些类库
 * [MJRefresh](https://github.com/CoderMJLee/MJRefresh) 上下拉刷新：这个东东是国内一位大神写的，支持scrollView、collectionView、tableView等滚动视图的上下拉刷新，还可以自定义，相当perfect的解决方案。
