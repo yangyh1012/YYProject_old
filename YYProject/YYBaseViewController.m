@@ -616,11 +616,11 @@
         self.HUD.delegate = self;
     }
     
-    self.HUD.labelFont = [UIFont systemFontOfSize:fontSize];
-    self.HUD.yOffset = yOffset;
+    self.HUD.label.font = [UIFont systemFontOfSize:fontSize];
+    self.HUD.offset = CGPointMake(self.HUD.offset.x, yOffset);
     self.HUD.mode = mode;
-    self.HUD.labelText = text;
-    [self.HUD show:YES];
+    self.HUD.label.text = text;
+    [self.HUD showAnimated:YES];
 }
 
 - (void)hide:(BOOL)animated {
@@ -632,10 +632,10 @@
     
     if (delay > 0) {
         
-        [self.HUD hide:YES afterDelay:YYProjectHUDTipTime];
+        [self.HUD hideAnimated:YES afterDelay:YYProjectHUDTipTime];
     } else {
         
-        [self.HUD hide:YES];
+        [self.HUD hideAnimated:YES];
     }
 }
 

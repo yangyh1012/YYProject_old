@@ -1,8 +1,8 @@
 platform:ios, '8.0'
 
 target "YYProject"
-pod 'MJRefresh'
-pod 'AFNetworking', '~> 3.0'
-pod 'MBProgressHUD', '~> 0.9.2'
-pod 'SDWebImage', '~>3.7'
-pod 'MJExtension'
+pod 'MJRefresh', '~> 3.1.12'
+pod 'AFNetworking', '~> 3.1.0'
+pod 'MBProgressHUD', '~> 1.0.0'
+pod 'SDWebImage', '~> 3.8.1'
+pod 'MJExtension', '~> 3.0.13'

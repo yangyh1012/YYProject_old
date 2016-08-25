@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B8B5B260A41E8C3E7289A5A /* libPods-YYProject.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2E638AFA7B5C3D3D99E9F6ED /* libPods-YYProject.a */; };
 		A00BC0481C942CF1004391D6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A00BC0471C942CF1004391D6 /* main.m */; };
 		A00BC04B1C942CF1004391D6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A00BC04A1C942CF1004391D6 /* AppDelegate.m */; };
 		A00BC04E1C942CF1004391D6 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A00BC04D1C942CF1004391D6 /* ViewController.m */; };
@@ -49,8 +50,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2A814B11DD11026094149072 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
-		38FA24DC57FC0CACB42267E6 /* Pods-YYProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YYProject.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YYProject/Pods-YYProject.debug.xcconfig"; sourceTree = "<group>"; };
+		2E638AFA7B5C3D3D99E9F6ED /* libPods-YYProject.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YYProject.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C5F84BF15803FE5C97D9224 /* Pods-YYProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YYProject.release.xcconfig"; path = "Pods/Target Support Files/Pods-YYProject/Pods-YYProject.release.xcconfig"; sourceTree = "<group>"; };
 		A00BC0431C942CF1004391D6 /* YYProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YYProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A00BC0471C942CF1004391D6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A00BC0491C942CF1004391D6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -95,8 +96,7 @@
 		A0F26E9D1CAED5ED00CCACAB /* UIImage+YYImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+YYImage.m"; sourceTree = "<group>"; };
 		D72F10961D32395700CE5D9E /* UIView+YYView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+YYView.h"; sourceTree = "<group>"; };
 		D72F10971D32395700CE5D9E /* UIView+YYView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+YYView.m"; sourceTree = "<group>"; };
-		DFD9365E3D7139116030CD89 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		F0116462BBFAB6FD58C0AA45 /* Pods-YYProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YYProject.release.xcconfig"; path = "Pods/Target Support Files/Pods-YYProject/Pods-YYProject.release.xcconfig"; sourceTree = "<group>"; };
+		FAD5BD4826C16443EC630B2C /* Pods-YYProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YYProject.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YYProject/Pods-YYProject.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +104,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B8B5B260A41E8C3E7289A5A /* libPods-YYProject.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,6 +125,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		85DC1B727A09E859EA467925 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2E638AFA7B5C3D3D99E9F6ED /* libPods-YYProject.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		A00BC03A1C942CF1004391D6 = {
 			isa = PBXGroup;
 			children = (
@@ -131,8 +140,8 @@
 				A00BC05F1C942CF1004391D6 /* YYProjectTests */,
 				A00BC06A1C942CF2004391D6 /* YYProjectUITests */,
 				A00BC0441C942CF1004391D6 /* Products */,
-				A017560EEF25344058DB8AA4 /* Pods */,
-				C5764D98F5479ADBF19A5FE3 /* Frameworks */,
+				CAE27FD36BB17069A67282ED /* Pods */,
+				85DC1B727A09E859EA467925 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -247,17 +256,6 @@
 			name = model;
 			sourceTree = "<group>";
 		};
-		A017560EEF25344058DB8AA4 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				2A814B11DD11026094149072 /* Pods.debug.xcconfig */,
-				DFD9365E3D7139116030CD89 /* Pods.release.xcconfig */,
-				38FA24DC57FC0CACB42267E6 /* Pods-YYProject.debug.xcconfig */,
-				F0116462BBFAB6FD58C0AA45 /* Pods-YYProject.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		A05ADF911D1BDEC60003A60F /* base */ = {
 			isa = PBXGroup;
 			children = (
@@ -282,11 +280,13 @@
 			name = YYImage;
 			sourceTree = "<group>";
 		};
-		C5764D98F5479ADBF19A5FE3 /* Frameworks */ = {
+		CAE27FD36BB17069A67282ED /* Pods */ = {
 			isa = PBXGroup;
 			children = (
+				FAD5BD4826C16443EC630B2C /* Pods-YYProject.debug.xcconfig */,
+				7C5F84BF15803FE5C97D9224 /* Pods-YYProject.release.xcconfig */,
 			);
-			name = Frameworks;
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		D72F10991D323AB300CE5D9E /* YYView */ = {
@@ -635,12 +635,12 @@
 		};
 		A00BC0711C942CF2004391D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 38FA24DC57FC0CACB42267E6 /* Pods-YYProject.debug.xcconfig */;
+			baseConfigurationReference = FAD5BD4826C16443EC630B2C /* Pods-YYProject.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				GCC_PREFIX_HEADER = YYProject/PrefixHeader.pch;
 				INFOPLIST_FILE = YYProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yangyh1012.YYProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -649,12 +649,12 @@
 		};
 		A00BC0721C942CF2004391D6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F0116462BBFAB6FD58C0AA45 /* Pods-YYProject.release.xcconfig */;
+			baseConfigurationReference = 7C5F84BF15803FE5C97D9224 /* Pods-YYProject.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				GCC_PREFIX_HEADER = YYProject/PrefixHeader.pch;
 				INFOPLIST_FILE = YYProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.yangyh1012.YYProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
