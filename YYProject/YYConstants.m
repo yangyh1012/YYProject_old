@@ -73,17 +73,17 @@ static YYConstants *sharedManager = nil;
 
 - (UIColor *)YYProjectDefaultColor {
     
-    return [UIColor colorWithRed:166/255.0 green:137/255.0 blue:45/255.0 alpha:1.0];
+    return RGB_Color(166, 137, 45);
 }
 
 - (UIColor *)YYProjectLightColor {
     
-    return [UIColor colorWithRed:230.0f / 255.0f green:230.0f / 255.0f blue:230.0f / 255.0f alpha:1.0];
+    return RGB_Color(230, 230, 230);
 }
 
 - (UIColor *)YYProjectLightLightColor {
  
-    return [UIColor colorWithRed:245.0f / 255.0f green:245.0f / 255.0f blue:245.0f / 255.0f alpha:1.0];
+    return RGB_Color(245, 245, 245);
 }
 
 
