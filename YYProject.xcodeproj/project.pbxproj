@@ -28,6 +28,8 @@
 		A00BC09B1C9451A6004391D6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A00BC09A1C9451A6004391D6 /* InfoPlist.strings */; };
 		A05ADF8D1D1BDB180003A60F /* YYTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A05ADF8C1D1BDB180003A60F /* YYTableViewCell.m */; };
 		A05ADF901D1BDB2D0003A60F /* YYCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A05ADF8F1D1BDB2D0003A60F /* YYCollectionViewCell.m */; };
+		A063F6CD1D77C0AE00EA24E6 /* NSArray+YYArraySwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = A063F6CC1D77C0AE00EA24E6 /* NSArray+YYArraySwizzle.m */; };
+		A063F6D01D77C0CE00EA24E6 /* NSMutableArray+YYMutableArraySwizzle.m in Sources */ = {isa = PBXBuildFile; fileRef = A063F6CF1D77C0CE00EA24E6 /* NSMutableArray+YYMutableArraySwizzle.m */; };
 		A0F26E9E1CAED5ED00CCACAB /* UIImage+YYImage.m in Sources */ = {isa = PBXBuildFile; fileRef = A0F26E9D1CAED5ED00CCACAB /* UIImage+YYImage.m */; };
 		D72F10981D32395700CE5D9E /* UIView+YYView.m in Sources */ = {isa = PBXBuildFile; fileRef = D72F10971D32395700CE5D9E /* UIView+YYView.m */; };
 /* End PBXBuildFile section */
@@ -92,6 +94,10 @@
 		A05ADF8C1D1BDB180003A60F /* YYTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYTableViewCell.m; sourceTree = "<group>"; };
 		A05ADF8E1D1BDB2D0003A60F /* YYCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYCollectionViewCell.h; sourceTree = "<group>"; };
 		A05ADF8F1D1BDB2D0003A60F /* YYCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYCollectionViewCell.m; sourceTree = "<group>"; };
+		A063F6CB1D77C0AE00EA24E6 /* NSArray+YYArraySwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+YYArraySwizzle.h"; sourceTree = "<group>"; };
+		A063F6CC1D77C0AE00EA24E6 /* NSArray+YYArraySwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+YYArraySwizzle.m"; sourceTree = "<group>"; };
+		A063F6CE1D77C0CE00EA24E6 /* NSMutableArray+YYMutableArraySwizzle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableArray+YYMutableArraySwizzle.h"; sourceTree = "<group>"; };
+		A063F6CF1D77C0CE00EA24E6 /* NSMutableArray+YYMutableArraySwizzle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableArray+YYMutableArraySwizzle.m"; sourceTree = "<group>"; };
 		A0F26E9C1CAED5ED00CCACAB /* UIImage+YYImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+YYImage.h"; sourceTree = "<group>"; };
 		A0F26E9D1CAED5ED00CCACAB /* UIImage+YYImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+YYImage.m"; sourceTree = "<group>"; };
 		D72F10961D32395700CE5D9E /* UIView+YYView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+YYView.h"; sourceTree = "<group>"; };
@@ -229,6 +235,7 @@
 		A00BC0881C943D17004391D6 /* tools */ = {
 			isa = PBXGroup;
 			children = (
+				A063F6C71D77BFFD00EA24E6 /* YYSwizzle */,
 				A00BC0891C943D64004391D6 /* YYString */,
 				A0F26E9B1CAED5A900CCACAB /* YYImage */,
 				D72F10991D323AB300CE5D9E /* YYView */,
@@ -269,6 +276,17 @@
 				A05ADF8F1D1BDB2D0003A60F /* YYCollectionViewCell.m */,
 			);
 			name = base;
+			sourceTree = "<group>";
+		};
+		A063F6C71D77BFFD00EA24E6 /* YYSwizzle */ = {
+			isa = PBXGroup;
+			children = (
+				A063F6CB1D77C0AE00EA24E6 /* NSArray+YYArraySwizzle.h */,
+				A063F6CC1D77C0AE00EA24E6 /* NSArray+YYArraySwizzle.m */,
+				A063F6CE1D77C0CE00EA24E6 /* NSMutableArray+YYMutableArraySwizzle.h */,
+				A063F6CF1D77C0CE00EA24E6 /* NSMutableArray+YYMutableArraySwizzle.m */,
+			);
+			name = YYSwizzle;
 			sourceTree = "<group>";
 		};
 		A0F26E9B1CAED5A900CCACAB /* YYImage */ = {
@@ -493,7 +511,9 @@
 				A00BC04E1C942CF1004391D6 /* ViewController.m in Sources */,
 				A00BC07B1C943498004391D6 /* YYBaseViewController.m in Sources */,
 				A0F26E9E1CAED5ED00CCACAB /* UIImage+YYImage.m in Sources */,
+				A063F6D01D77C0CE00EA24E6 /* NSMutableArray+YYMutableArraySwizzle.m in Sources */,
 				A00BC0991C94508E004391D6 /* MJExtensionConfig.m in Sources */,
+				A063F6CD1D77C0AE00EA24E6 /* NSArray+YYArraySwizzle.m in Sources */,
 				A05ADF901D1BDB2D0003A60F /* YYCollectionViewCell.m in Sources */,
 				A00BC04B1C942CF1004391D6 /* AppDelegate.m in Sources */,
 				A00BC0801C943B23004391D6 /* YYNetManage.m in Sources */,
