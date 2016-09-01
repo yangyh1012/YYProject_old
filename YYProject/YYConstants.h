@@ -28,6 +28,8 @@
 #define RGB_Color(r,g,b) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:1.0];
 #define RGB_ColorA(r,g,b,a) [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a];
 
+#define Swizzle_Flag YES
+
 //***************************数据名称定义 start***************************************//
 
 extern NSString *const YYProjectSid;

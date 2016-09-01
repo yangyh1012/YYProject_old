@@ -12,6 +12,11 @@
 
 + (void)load {
     
+    if (!Swizzle_Flag) {
+        
+        return ;
+    }
+        
     Method fromMethod = class_getInstanceMethod(objc_getClass("__NSArrayI"), @selector(objectAtIndex:));
     Method toMethod = class_getInstanceMethod(objc_getClass("__NSArrayI"), @selector(save_array_objectAtIndex:));
     method_exchangeImplementations(fromMethod, toMethod);
