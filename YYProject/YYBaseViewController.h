@@ -90,6 +90,25 @@ typedef NS_ENUM(NSInteger, YYBaseViewControllerTestType) {
 
 
 /**
+ *  时差计算
+ *
+ *  @param anyDate 日期
+ *
+ *  @return 根据时差转换后的日期
+ */
+- (NSDate *)getNowDateFromatAnDate:(NSDate *)anyDate;
+
+/**
+ *  根据子视图得到某个特定类型的cell
+ *
+ *  @param aClass 特定类型
+ *  @param sender 子视图
+ *
+ *  @return 某个特定类型的cell
+ */
+- (UITableViewCell *)isCorrectCellWithClass:(Class)aClass subView:(id)sender;
+
+/**
  *  显示加载提示框
  *
  *  @param text     提示文字
