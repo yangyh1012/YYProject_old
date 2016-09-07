@@ -99,14 +99,14 @@ typedef NS_ENUM(NSInteger, YYBaseViewControllerTestType) {
 - (NSDate *)getNowDateFromatAnDate:(NSDate *)anyDate;
 
 /**
- *  根据子视图得到某个特定类型的cell
+ *  根据子视图得到某个特定类型的父视图View
  *
  *  @param aClass 特定类型
  *  @param sender 子视图
  *
- *  @return 某个特定类型的cell
+ *  @return 某个特定类型的View
  */
-- (UITableViewCell *)isCorrectCellWithClass:(Class)aClass subView:(id)sender;
+- (id)isCorrectViewWithClass:(Class)aClass subView:(id)sender;
 
 /**
  *  显示加载提示框

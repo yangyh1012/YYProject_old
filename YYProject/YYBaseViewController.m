@@ -472,43 +472,61 @@
     return destinationDateNow;
 }
 
-- (UITableViewCell *)isCorrectCellWithClass:(Class)aClass subView:(id)sender {
+//- (UITableViewCell *)isCorrectCellWithClassOld:(Class)aClass subView:(id)sender {
+//    
+//    UITableViewCell *cell = (UITableViewCell *)[sender superview];
+//    if ([cell isKindOfClass:aClass]) {
+//        
+//        return cell;
+//    } else {
+//        
+//        cell = (UITableViewCell *)[[sender superview] superview];
+//        if ([cell isKindOfClass:aClass]) {
+//            
+//            return cell;
+//        } else {
+//            
+//            cell = (UITableViewCell *)[[[sender superview] superview] superview];
+//            if ([cell isKindOfClass:aClass]) {
+//                
+//                return cell;
+//            } else {
+//                
+//                cell = (UITableViewCell *)[[[[sender superview] superview] superview] superview];
+//                if ([cell isKindOfClass:aClass]) {
+//                    
+//                    return cell;
+//                } else {
+//                    
+//                    cell = (UITableViewCell *)[[[[[sender superview] superview] superview] superview] superview];
+//                    if ([cell isKindOfClass:aClass]) {
+//                        
+//                        return cell;
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    
+//    return nil;
+//}
+
+- (id)isCorrectViewWithClass:(Class)aClass subView:(id)sender {
     
-    UITableViewCell *cell = (UITableViewCell *)[sender superview];
-    if ([cell isKindOfClass:aClass]) {
+    id view = [sender superview];
+    if (view) {
         
-        return cell;
-    } else {
-        
-        cell = (UITableViewCell *)[[sender superview] superview];
-        if ([cell isKindOfClass:aClass]) {
+        if ([view isKindOfClass:aClass]) {
             
-            return cell;
+            return view;
         } else {
             
-            cell = (UITableViewCell *)[[[sender superview] superview] superview];
-            if ([cell isKindOfClass:aClass]) {
-                
-                return cell;
-            } else {
-                
-                cell = (UITableViewCell *)[[[[sender superview] superview] superview] superview];
-                if ([cell isKindOfClass:aClass]) {
-                    
-                    return cell;
-                } else {
-                    
-                    cell = (UITableViewCell *)[[[[[sender superview] superview] superview] superview] superview];
-                    if ([cell isKindOfClass:aClass]) {
-                        
-                        return cell;
-                    }
-                }
-            }
+            return [self isCorrectViewWithClass:aClass subView:view];
         }
+    } else {
+        
+        return nil;
     }
-    
-    return nil;
 }
 
 #pragma mark - Notification
