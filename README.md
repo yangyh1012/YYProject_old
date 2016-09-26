@@ -40,7 +40,7 @@
 ### ViewController：
 * 每次创建新的视图控制器时，可以直接拷贝该文件中的代码到新的视图控制器中。
 
-# 有哪些值得使用的插件呢？
+# 有哪些值得使用的插件呢？（不支持Xcode8）
 * [Alcatraz.xcplugin](http://blog.devtang.com/2014/03/05/use-alcatraz-to-manage-xcode-plugins/?utm_source=tuicool&utm_medium=referral)：管理iOS插件的好工具，值得下载。
 * [VVDocumenter-Xcode.xcplugin]()：喵神开发的类似Java的注释工具，非常好用。
 * [ESJsonFormat.xcplugin](http://www.oschina.net/p/ESJsonFormat-Xcode)：将 JSON 格式化输出为模型的属性。
