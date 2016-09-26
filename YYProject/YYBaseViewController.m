@@ -147,6 +147,8 @@
                                                             name:UIKeyboardWillHideNotification object:nil];
         }
     }
+    
+    DLog(@"====== %@ dealloc ======",NSStringFromClass(self.class));
 }
 
 - (void)didReceiveMemoryWarning {
