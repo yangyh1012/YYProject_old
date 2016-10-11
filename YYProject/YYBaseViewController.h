@@ -96,7 +96,7 @@ typedef NS_ENUM(NSInteger, YYBaseViewControllerTestType) {
  *
  *  @return 根据时差转换后的日期
  */
-- (NSDate *)getNowDateFromatAnDate:(NSDate *)anyDate;
+- (NSDate *)obtainNowDateFromatAnDate:(NSDate *)anyDate;
 
 /**
  *  根据子视图得到某个特定类型的父视图View
@@ -107,6 +107,13 @@ typedef NS_ENUM(NSInteger, YYBaseViewControllerTestType) {
  *  @return 某个特定类型的View
  */
 - (id)isCorrectViewWithClass:(Class)aClass subView:(id)sender;
+
+/**
+ *  获得当前语言
+ *
+ *  @return 获得当前语言
+ */
+- (NSString *)obtainCurrentLanguage;
 
 /**
  *  显示加载提示框

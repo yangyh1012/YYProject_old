@@ -456,7 +456,7 @@
     self.dataEmptyTipLabel.hidden = YES;
 }
 
-- (NSDate *)getNowDateFromatAnDate:(NSDate *)anyDate {
+- (NSDate *)obtainNowDateFromatAnDate:(NSDate *)anyDate {
     
     //设置源日期时区
     NSTimeZone *sourceTimeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];//或GMT
@@ -474,45 +474,6 @@
     return destinationDateNow;
 }
 
-//- (UITableViewCell *)isCorrectCellWithClassOld:(Class)aClass subView:(id)sender {
-//    
-//    UITableViewCell *cell = (UITableViewCell *)[sender superview];
-//    if ([cell isKindOfClass:aClass]) {
-//        
-//        return cell;
-//    } else {
-//        
-//        cell = (UITableViewCell *)[[sender superview] superview];
-//        if ([cell isKindOfClass:aClass]) {
-//            
-//            return cell;
-//        } else {
-//            
-//            cell = (UITableViewCell *)[[[sender superview] superview] superview];
-//            if ([cell isKindOfClass:aClass]) {
-//                
-//                return cell;
-//            } else {
-//                
-//                cell = (UITableViewCell *)[[[[sender superview] superview] superview] superview];
-//                if ([cell isKindOfClass:aClass]) {
-//                    
-//                    return cell;
-//                } else {
-//                    
-//                    cell = (UITableViewCell *)[[[[[sender superview] superview] superview] superview] superview];
-//                    if ([cell isKindOfClass:aClass]) {
-//                        
-//                        return cell;
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    
-//    return nil;
-//}
-
 - (id)isCorrectViewWithClass:(Class)aClass subView:(id)sender {
     
     id view = [sender superview];
@@ -529,6 +490,13 @@
         
         return nil;
     }
+}
+
+- (NSString *)obtainCurrentLanguage {
+    
+    //Hans简体中文、Hant繁体中文
+    NSArray *languages = [NSLocale preferredLanguages];
+    return [languages objectAtIndex:0];
 }
 
 #pragma mark - Notification
