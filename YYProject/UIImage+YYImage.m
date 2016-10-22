@@ -74,4 +74,18 @@
     return tintedImage;
 }
 
+- (BOOL)imageDownloadWithUrlStr:(NSString *)urlStr imageName:(NSString *)imageName {
+    
+    NSArray *lastPaths = [urlStr componentsSeparatedByString:@"."];
+    NSString *fileName = [NSString stringWithFormat:@"%@.%@",imageName,[lastPaths lastObject]];
+    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:urlStr]];
+
+    // 本地沙盒目录
+    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    // 得到本地沙盒中名为"MyImage"的路径，"MyImage"是保存的图片名
+    NSString *imageFilePath = [path stringByAppendingPathComponent:fileName];
+    // 将取得的图片写入本地的沙盒中
+    return [data writeToFile:imageFilePath  atomically:YES];
+}
+
 @end

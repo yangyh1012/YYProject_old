@@ -31,4 +31,14 @@
 - (UIImage *)imageWithTintColor:(UIColor *)tintColor;
 - (UIImage *)imageWithGradientTintColor:(UIColor *)tintColor;
 
+/**
+ *  图片文件下载
+ *
+ *  @param urlStr    image的url字符串地址
+ *  @param imageName image的图片名称
+ *
+ *  @return 是否写入成功
+ */
+- (BOOL)imageDownloadWithUrlStr:(NSString *)urlStr imageName:(NSString *)imageName;
+
 @end

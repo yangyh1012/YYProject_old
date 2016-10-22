@@ -42,6 +42,14 @@
     // command+ctrl+↑ h文件和m文件互换
     // command+shift+J 打开文件导航
     
+    /*说明：资源文件目录     */
+    NSBundle *bundle = [NSBundle mainBundle];
+    DLog(@"%@",bundle);//DLog
+    
+    /*说明：documents文件目录      */
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    DLog(@"%@",paths);//DLog
+    
     self.automaticallyAdjustsScrollViewInsets = NO;//去掉多余的滚动间距
     
     [YYCommunication sharedManager].delegate = self;//网络请求代理
