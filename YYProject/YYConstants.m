@@ -86,5 +86,9 @@ static YYConstants *sharedManager = nil;
     return RGB_Color(245, 245, 245);
 }
 
+- (UIColor *)YYProjectButtonColor {
+    
+    return RGB_Color(0, 122, 255);
+}
 
 @end

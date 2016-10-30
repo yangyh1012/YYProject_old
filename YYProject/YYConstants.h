@@ -80,4 +80,6 @@ extern NSString *const YYLocationNotification;
 
 - (UIColor *)YYProjectLightLightColor;
 
+- (UIColor *)YYProjectButtonColor;
+
 @end

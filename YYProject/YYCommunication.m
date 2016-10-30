@@ -79,6 +79,8 @@ static YYCommunication *sharedManager = nil;
     DLog(@"请求方式为：%@",@(mode));
     DLog(@"通知名称为：%@",[otherParams objectForKey:YYNotificationKey]);
     
+    URLString = [URLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
     if (!data) {
         
         if (mode == 0) {
@@ -97,6 +99,11 @@ static YYCommunication *sharedManager = nil;
                 DLog(@"====================================================================================================");
                 
                 [self.delegate requestFailure:URLString error:error otherParams:otherParams];
+                
+                if (error.userInfo[@"com.alamofire.serialization.response.error.data"]) {
+                    
+                    DLog(@"com.alamofire.serialization.response.error.data: %@",[[NSString alloc] initWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] encoding:NSUTF8StringEncoding]);
+                }
             }];
             
             [self.requestDic setObject:dataTask forKey:[otherParams objectForKey:YYNotificationKey]];
@@ -117,6 +124,11 @@ static YYCommunication *sharedManager = nil;
                 DLog(@"====================================================================================================");
                 
                 [self.delegate requestFailure:URLString error:error otherParams:otherParams];
+                
+                if (error.userInfo[@"com.alamofire.serialization.response.error.data"]) {
+                    
+                    DLog(@"com.alamofire.serialization.response.error.data: %@",[[NSString alloc] initWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] encoding:NSUTF8StringEncoding]);
+                }
             }];
             
             [self.requestDic setObject:dataTask forKey:[otherParams objectForKey:YYNotificationKey]];
@@ -146,6 +158,11 @@ static YYCommunication *sharedManager = nil;
                 DLog(@"====================================================================================================");
                 
                 [self.delegate requestFailure:URLString error:error otherParams:otherParams];
+                
+                if (error.userInfo[@"com.alamofire.serialization.response.error.data"]) {
+                    
+                    DLog(@"com.alamofire.serialization.response.error.data: %@",[[NSString alloc] initWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] encoding:NSUTF8StringEncoding]);
+                }
             }];
             [self.requestDic setObject:dataTask forKey:[otherParams objectForKey:YYNotificationKey]];
         } else {
@@ -204,6 +221,8 @@ static YYCommunication *sharedManager = nil;
     DLog(@"参数列表为：%@",parametersDic);
     DLog(@"请求方式为：%@",@(mode));
     DLog(@"通知名称为：%@",notificationName);
+    
+    URLString = [URLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     if (!data) {
         
