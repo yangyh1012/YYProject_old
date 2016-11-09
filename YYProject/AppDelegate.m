@@ -17,6 +17,16 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    /*说明：资源文件目录     */
+    NSBundle *bundle = [NSBundle mainBundle];
+    DLog(@"%@",bundle);//DLog
+    
+    /*说明：documents文件目录      */
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    DLog(@"%@",paths);//DLog
+    
+    
     return YES;
 }
 
