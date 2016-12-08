@@ -219,13 +219,13 @@
     NSString *URLString = YYLocationUrl;
     NSDictionary *params = @{@"page":[NSNumber numberWithInteger:self.pageNum]};
     NSDictionary *otherParams = @{@"tableView":self.tableView,
-                                  @"YYNotificationPageLoad":[NSNumber numberWithInteger:type]};
+                                  YYNotificationPageLoad:[NSNumber numberWithInteger:type]};
     
     NSDictionary *parameters = @{@"URLString":URLString,
                                  @"parameters":params,
                                  @"otherParams":otherParams};
     
-    [self requestDataParam:parameters];
+    [self requestDataParam:parameters loadFlag:NO];
 }
 
 #pragma mark - Request

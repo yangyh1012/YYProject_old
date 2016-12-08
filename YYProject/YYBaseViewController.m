@@ -386,13 +386,13 @@
     NSString *URLString = @"";
     NSDictionary *params = @{@"page":[NSNumber numberWithInteger:self.pageNum]};
     NSDictionary *otherParams = @{@"tableView":self.tableView1,
-                                  @"YYNotificationPageLoad":[NSNumber numberWithInteger:type]};
+                                  YYNotificationPageLoad:[NSNumber numberWithInteger:type]};
     
     NSDictionary *parameters = @{@"URLString":URLString,
                                  @"parameters":params,
                                  @"otherParams":otherParams};
     
-    [self requestDataParam:parameters];
+    [self requestDataParam:parameters loadFlag:NO];
 }
 
 /**
@@ -405,7 +405,7 @@
     
     if (pageLoadStr && tableView) {
         
-        if ([pageLoadStr isEqualToString:@"0"]) {
+        if ([pageLoadStr integerValue] == 0) {
             
             [tableView.mj_header endRefreshing];
         } else {

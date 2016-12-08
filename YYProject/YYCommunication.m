@@ -74,7 +74,7 @@ static YYCommunication *sharedManager = nil;
     
     NSData *imageData = allPara[@"imageData"];
     
-    [self httpRequest:URLString parameters:parameters otherParams:otherParams mode:YYCommunicationModePost uidAndTokenFlag:uidAndTokenFlag imageData:imageData];
+    [self httpRequest:URLString parameters:parameters otherParams:otherParams mode:mode uidAndTokenFlag:uidAndTokenFlag imageData:imageData];
 }
 
 
