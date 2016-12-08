@@ -121,6 +121,8 @@ static YYCommunication *sharedManager = nil;
     
     DLog(@"请求开始：：：");
     
+    __weak __typeof(self)wself = self;
+    
     //不是图片上传时
     if (!imageData) {
         
@@ -128,11 +130,11 @@ static YYCommunication *sharedManager = nil;
             
             NSURLSessionDataTask *dataTask = [[YYNetManage sharedManager] GET:URLString parameters:mutableParameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
-                [self requestSuccess:responseObject URLString:URLString parameters:mutableParameters otherParams:otherParams];
+                [wself requestSuccess:responseObject URLString:URLString parameters:mutableParameters otherParams:otherParams];
                 
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
-                [self requestFailure:error URLString:URLString parameters:mutableParameters otherParams:otherParams];
+                [wself requestFailure:error URLString:URLString parameters:mutableParameters otherParams:otherParams];
             }];
             
             //加入线程集合
@@ -142,11 +144,11 @@ static YYCommunication *sharedManager = nil;
             
             NSURLSessionDataTask *dataTask = [[YYNetManage sharedManager] POST:URLString parameters:mutableParameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
-                [self requestSuccess:responseObject URLString:URLString parameters:mutableParameters otherParams:otherParams];
+                [wself requestSuccess:responseObject URLString:URLString parameters:mutableParameters otherParams:otherParams];
                 
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
-                [self requestFailure:error URLString:URLString parameters:mutableParameters otherParams:otherParams];
+                [wself requestFailure:error URLString:URLString parameters:mutableParameters otherParams:otherParams];
             }];
             
             //加入线程集合
@@ -170,11 +172,11 @@ static YYCommunication *sharedManager = nil;
             
         } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
-            [self requestSuccess:responseObject URLString:URLString parameters:mutableParameters otherParams:otherParams];
+            [wself requestSuccess:responseObject URLString:URLString parameters:mutableParameters otherParams:otherParams];
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
-            [self requestFailure:error URLString:URLString parameters:mutableParameters otherParams:otherParams];
+            [wself requestFailure:error URLString:URLString parameters:mutableParameters otherParams:otherParams];
         }];
         
         //加入线程集合
