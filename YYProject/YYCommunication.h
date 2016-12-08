@@ -12,9 +12,9 @@
 
 @required
 
-- (void)requestResult:(nullable id)responseObject URLString:(nullable NSString *)URLString otherParams:(nullable id)otherParams;
+- (void)requestSuccess:(nullable id)responseObject URLString:(nullable NSString *)URLString parameters:(nullable NSDictionary *)parameters otherParams:(nullable NSDictionary *)otherParams;
 
-- (void)requestFailure:(nullable NSString *)URLString error:(nullable NSError *)error otherParams:(nullable id)otherParams;
+- (void)requestFailure:(nullable NSError *)error URLString:(nullable NSString *)URLString parameters:(nullable NSDictionary *)parameters otherParams:(nullable NSDictionary *)otherParams;
 
 @end
 
@@ -36,54 +36,14 @@ typedef NS_ENUM(NSInteger, YYCommunicationMode) {
 
 @property (nullable, nonatomic, weak) id <YYCommunicationDelegate> delegate;
 
-+ (nullable instancetype)sharedManager;
 
+- (void)httpRequest:(nullable NSString *)URLString;
 
-- (void)httpRequest:(nonnull NSString *)URLString parameters:(nullable id)parameters otherParams:(nullable id)otherParams mode:(YYCommunicationMode)mode;
-
-- (void)httpRequest:(nonnull NSString *)URLString parameters:(nullable id)parameters otherParams:(nullable id)otherParams mode:(YYCommunicationMode)mode uidAndTokenFlag:(BOOL)uidAndTokenFlag;
-
-- (void)httpRequest:(nonnull NSString *)URLString parameters:(nullable id)parameters otherParams:(nullable id)otherParams mode:(YYCommunicationMode)mode uidAndTokenFlag:(BOOL)uidAndTokenFlag imageData:(nullable NSData *)data imageParamName:(nullable NSString *)imageParamName;
+- (void)httpRequestWithAllPara:(nullable NSDictionary *)allPara;
 
 - (void)cancleRequestByNotificationName:(nullable NSString *)notificationName;
 
-
-
-
-
-/**
- *  废弃的网络请求
- *
- *  @param URLString        网址
- *  @param parameters       参数
- *  @param mode             post or get
- *  @param notificationName 通知名
- */
-- (void)httpRequest:(nullable NSString *)URLString parameters:(nullable id)parameters mode:(YYCommunicationMode)mode notificationName:(nullable NSString *)notificationName __deprecated_msg("Method deprecated. Use `httpRequest:parameters:otherParams:mode:`");
-
-/**
- *  废弃的网络请求
- *
- *  @param URLString        网址
- *  @param parameters       参数
- *  @param mode             post or get
- *  @param notificationName 通知名
- *  @param uidAndTokenFlag  是否传递token
- */
-- (void)httpRequest:(nullable NSString *)URLString parameters:(nullable id)parameters mode:(YYCommunicationMode)mode notificationName:(nullable NSString *)notificationName uidAndTokenFlag:(BOOL)uidAndTokenFlag __deprecated_msg("Method deprecated. Use `httpRequest:parameters:otherParams:mode:uidAndTokenFlag:`");
-
-/**
- *  废弃的网络请求
- *
- *  @param URLString        网址
- *  @param parameters       参数
- *  @param mode             post or get
- *  @param notificationName 通知名
- *  @param uidAndTokenFlag  是否传递token
- *  @param data             图片数据
- *  @param imageParamName   图片上传参数名
- */
-- (void)httpRequest:(nullable NSString *)URLString parameters:(nullable id)parameters mode:(YYCommunicationMode)mode notificationName:(nullable NSString *)notificationName uidAndTokenFlag:(BOOL)uidAndTokenFlag imageData:(nullable NSData *)data imageParamName:(nullable NSString *)imageParamName __deprecated_msg("Method deprecated. Use `httpRequest:parameters:otherParams:mode:uidAndTokenFlag:imageData:imageParamName:`");
+- (void)cancleAllRequest;
 
 @end
 

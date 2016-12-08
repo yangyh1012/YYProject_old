@@ -15,13 +15,15 @@
 
 @property (nullable, nonatomic, strong) UICollectionView *collectionView1;
 
+@property (nonatomic, strong) NSMutableArray *datas;
 
+@property (nonatomic, strong) YYCommunication *communication;
 
 @property (nullable, nonatomic, strong) MBProgressHUD *HUD;
 
-@property (nonatomic, strong) NSMutableArray *datas;
-
 @property (nonatomic, strong) UILabel *dataEmptyTipLabel;
+
+
 
 @end
 
@@ -43,14 +45,11 @@
     // command+shift+J 打开文件导航
     
     self.automaticallyAdjustsScrollViewInsets = NO;//去掉多余的滚动间距
-    
-    [YYCommunication sharedManager].delegate = self;//网络请求代理
-    
     self.navigationController.navigationBar.translucent = NO;//去掉导航透明
-    
     self.tabBarController.tabBar.translucent = NO;//去掉底部透明
     
-    
+    self.communication = [[YYCommunication alloc] init];
+    self.communication.delegate = self;//网络请求代理
     
     {
         BOOL flag = NO;
@@ -62,13 +61,13 @@
             
             self.pageNum = YYProjectStartPage;
             
-            [YYCommunication sharedManager].delegate = self;
+            self.communication.delegate = self;
         }
         
         //数据请求
         if (flag) {
         
-            [self requestDataList:nil otherParams:nil];
+            [self requestDataUrlStr:YYProjectBaseUrl];
         }
         
         //添加通知
@@ -102,7 +101,7 @@
         if (flag) {
             
             [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(notificationTestHandle:)
+                                                     selector:@selector(keyboardWillShow:)
                                                          name:YYTestNotification object:nil];
         }
     }
@@ -131,7 +130,8 @@
 - (void)dealloc {
     
     [NSObject cancelPreviousPerformRequestsWithTarget:self];//去掉动作
-    [YYCommunication sharedManager].delegate = nil;//去除代理
+    [self.communication cancleAllRequest];
+    self.communication.delegate = nil;//去除代理
     [[NSNotificationCenter defaultCenter] removeObserver:self];//去除通知
     [self hide:NO];//去除提示框
     
@@ -161,6 +161,10 @@
 
 - (void)navigationSetting {
     
+    //从storyboard获取控制器进而推出
+    UIViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"UIViewController"];
+    [self.navigationController pushViewController:viewController animated:NO];
+    
     //隐藏后退按钮
     [self.navigationItem setHidesBackButton:YES];
     
@@ -172,8 +176,9 @@
         [navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     }
     
-    //隐藏导航栏
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    //隐藏导航栏，放在viewWillAppear和viewWillDisappear中
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
     
     //登录取消时，自动跳转到首页
     [self.navigationController popToRootViewControllerAnimated:YES];
@@ -194,61 +199,120 @@
 
 #pragma mark - Request
 
-/**
- *  废弃的网络请求
- *
- *  @param params 参数
- */
-- (void)requestDataListForNotification:(id)params {
+//无任何参数请求
+- (void)requestDataUrlStr:(NSString *)urlStr {
     
-//    [self showHUDWithText:YYProjectHUDRequestTipText mode:MBProgressHUDModeIndeterminate yOffset:0 font:YYProjectHUDLoadTextFont];
-//    [[YYCommunication sharedManager] httpRequest:YYProjectBaseUrl parameters:params mode:YYCommunicationModePost notificationName:YYTestNotification uidAndTokenFlag:YES];
+    [self requestDataUrlStr:urlStr loadFlag:YES];
 }
 
-
-
-
-
-- (void)requestDataList:(id)requestParams otherParams:(id)otherParams {
+//无任何参数请求
+- (void)requestDataUrlStr:(NSString *)urlStr loadFlag:(BOOL)loadFlag {
     
-    [self showHUDWithText:YYProjectHUDRequestTipText mode:MBProgressHUDModeIndeterminate yOffset:0 font:YYProjectHUDLoadTextFont];
-    [[YYCommunication sharedManager] httpRequest:YYProjectBaseUrl parameters:requestParams otherParams:otherParams mode:YYCommunicationModePost];
+    if (loadFlag) {
+        
+        [self showIndeterminateTip];
+    }
+    
+    [self.communication httpRequest:urlStr];
 }
 
-- (void)requestResult:(id)responseObject URLString:(NSString *)URLString otherParams:(id)otherParams {
+//有参数请求
+- (void)requestDataParam:(NSDictionary *)parameters {
     
-    NSNumber *responseStatus = (NSNumber *)[[responseObject objectForKey:@"status"] objectForKey:@"succeed"];
+    [self requestDataParam:parameters loadFlag:YES];
+}
+
+//有参数请求
+- (void)requestDataParam:(NSDictionary *)parameters loadFlag:(BOOL)loadFlag {
+    
+    if (loadFlag) {
+        
+        [self showIndeterminateTip];
+    }
+    
+    [self.communication httpRequestWithAllPara:parameters];
+}
+
+//显示加载条
+- (void)showIndeterminateTip {
+    
+    [self showIndeterminateHUD];
+}
+
+//可以正常连接到服务端
+- (void)requestSuccess:(nullable id)responseObject URLString:(nullable NSString *)URLString parameters:(nullable NSDictionary *)parameters otherParams:(nullable NSDictionary *)otherParams {
+    
+    NSString *respCode = @"RespCode";
+    NSString *respDesc = @"RespDesc";
+    NSString *results = @"Results";
+    
+    NSNumber *responseStatus = (NSNumber *)[responseObject objectForKey:respCode];
+    NSString *statusStr = [responseStatus stringValue];
+    
+    NSMutableDictionary *mutableOtherParams = [otherParams mutableCopy];
+    [mutableOtherParams setObject:[responseObject objectForKey:respDesc] forKey:respDesc];
     
     //请求失败或者是重新登录
-    if ([[responseStatus stringValue] isEqualToString:YYProjectStatusFailed] ||
-        [[responseStatus stringValue] isEqualToString:YYProjectStatusLoginFirst]) {//失败
+    if ([statusStr isEqualToString:YYProjectStatusFailed] ||
+        [statusStr isEqualToString:YYProjectStatusLoginFirst]) {
         
-        NSString *responseTip = (NSString *)[[responseObject objectForKey:@"status"] objectForKey:@"error_desc"];
-        [self requestLoginFirstOrFailedTip:(id)responseTip responseStatus:responseStatus otherParams:otherParams];
+        __weak __typeof(self)wself = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+        
+            NSString *responseTip = [mutableOtherParams objectForKey:respDesc];
+            DLog(@"错误信息为：%@",responseTip);
+            DLog(@"返回的状态码为：%@",statusStr);
+            
+            //隐藏加载条
+            [wself hideIndeterminateHUD];
+            
+            [wself requestLoginFirstOrFailedStatus:statusStr otherParams:mutableOtherParams];
+        });
+        
     } else {
         
-        [self requestSuccess:responseObject otherParams:otherParams];
+        //请求成功
+        __weak __typeof(self)wself = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            DLog(@"提示信息为：%@",[mutableOtherParams objectForKey:respDesc]);
+            DLog(@"返回的数据为：%@",responseObject);
+            
+            //请求成功还是要不要隐藏加载条
+            if (![mutableOtherParams objectForKey:@"HUD"]) {
+                
+                [wself hideIndeterminateHUD];
+            }
+            
+            [wself requestSuccess:[responseObject objectForKey:results] otherParams:mutableOtherParams];
+        });
     }
 }
 
-- (void)requestFailure:(NSString *)URLString error:(NSError *)error otherParams:(id)otherParams {
+//不能正常连接到服务端
+- (void)requestFailure:(nullable NSError *)error URLString:(nullable NSString *)URLString parameters:(nullable NSDictionary *)parameters otherParams:(nullable NSDictionary *)otherParams {
     
-    //打印错误信息
-    [self showHUDWithText:[NSString codeDescription:[error code]] mode:MBProgressHUDModeText yOffset:[self HUDOffsetY] font:YYProjectHUDTipTextFont];
-    [self hide:YES afterDelay:YYProjectHUDTipTime];
+    __weak __typeof(self)wself = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
     
-    if ([otherParams objectForKey:YYNotificationPageLoad]) {
+        //隐藏加载条
+        [wself hideIndeterminateHUD];
         
-        [self stopLoadingAndPageInit];
-    }
+        //打印错误信息
+        [wself showErrorMessage:[NSString codeDescription:[error code]]];
+        
+        [wself stopLoadingAndPageInitOtherParams:otherParams];
+    });
 }
 
-- (void)requestLoginFirstOrFailedTip:(id)responseTip responseStatus:(NSNumber *)responseStatus otherParams:(id)otherParams {
+//请求失败或者是重新登录
+- (void)requestLoginFirstOrFailedStatus:(NSString *)statusStr otherParams:(id)otherParams {
     
+    NSString *responseTip = [otherParams objectForKey:@"RespDesc"];
     [self showHUDWithText:responseTip mode:MBProgressHUDModeText yOffset:[self HUDOffsetY] font:YYProjectHUDTipTextFont];
     
     //重新登录
-    if ([[responseStatus stringValue] isEqualToString:YYProjectStatusLoginFirst]) {
+    if ([statusStr isEqualToString:YYProjectStatusLoginFirst]) {
         
         if (![otherParams objectForKey:YYNotificationLoginFirst]) {
             
@@ -263,25 +327,32 @@
         [self hide:YES afterDelay:YYProjectHUDTipTime];
     }
     
-    if ([otherParams objectForKey:YYNotificationPageLoad]) {
-        
-        [self stopLoadingAndPageInit];
-    }
+    [self stopLoadingAndPageInitOtherParams:otherParams];
 }
 
+/**
+ *  请求成功
+ */
 - (void)requestSuccess:(id)responseObject otherParams:(id)otherParams {
     
-    
+    //子类实现这个方法
 }
 
-#pragma mark - Action
-
+/**
+ *  跳转到登录
+ */
 - (void)showLogin:(id)sender {
     
     [self hide:YES];
-    [[YYDataHandle sharedManager] setUserDefaultStringValue:@"" WithKey:YYProjectSid];
-    [self performSegueWithIdentifier:@"showLogin" sender:nil];
+    [[YYDataHandle sharedManager] setUserDefaultSecretStringValue:@"" WithKey:YYProjectSid];
+    UIViewController *loginViewController = [[self storyboard] instantiateViewControllerWithIdentifier:@"MDLoginViewController"];
+    [self.navigationController pushViewController:loginViewController animated:YES];
 }
+
+
+
+//=======================================================================================================
+
 
 /**
  *  下拉加载数据
@@ -289,9 +360,8 @@
 - (void)loadListDataForStart {
     
     self.pageNum = YYProjectStartPage;
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"sd_id",@"sd_id", nil];
-    NSMutableDictionary *otherParams = [[NSMutableDictionary alloc] initWithObjectsAndKeys:YYTestNotification,YYNotificationKey, nil];
-    [self requestDataList:params otherParams:otherParams];
+    
+    [self requestPageDataWithType:0];
 }
 
 /**
@@ -300,39 +370,57 @@
 - (void)loadListDataForMore {
     
     self.pageNum = self.pageNum + 1;
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"sd_id",@"sd_id", nil];
-    NSMutableDictionary *otherParams = [[NSMutableDictionary alloc] initWithObjectsAndKeys:YYTestNotification,YYNotificationKey, nil];
-    [self requestDataList:params otherParams:otherParams];
+    if ([self.datas count] <= 0) {
+        
+        self.pageNum = 1;
+    }
+    
+    [self requestPageDataWithType:1];
 }
 
 /**
- *  停止刷新
+ *  分页加载数据
  */
-- (void)stopLoading {
+- (void)requestPageDataWithType:(NSInteger)type {
     
-    if (self.pageNum == YYProjectStartPage) {
+    NSString *URLString = @"";
+    NSDictionary *params = @{@"page":[NSNumber numberWithInteger:self.pageNum]};
+    NSDictionary *otherParams = @{@"tableView":self.tableView1,
+                                  @"YYNotificationPageLoad":[NSNumber numberWithInteger:type]};
+    
+    NSDictionary *parameters = @{@"URLString":URLString,
+                                 @"parameters":params,
+                                 @"otherParams":otherParams};
+    
+    [self requestDataParam:parameters];
+}
+
+/**
+ *  让上下拉刷新的加载条停止
+ */
+- (void)stopLoadingAndPageInitOtherParams:(id)otherParams {
+    
+    UITableView *tableView = [otherParams objectForKey:@"tableView"];
+    NSString *pageLoadStr = [otherParams objectForKey:YYNotificationPageLoad];
+    
+    if (pageLoadStr && tableView) {
         
-        [self.tableView1.mj_header endRefreshing];
-    } else {
+        if ([pageLoadStr isEqualToString:@"0"]) {
+            
+            [tableView.mj_header endRefreshing];
+        } else {
+            
+            [tableView.mj_footer endRefreshing];
+        }
         
-        [self.tableView1.mj_footer endRefreshing];
+        if (self.pageNum > YYProjectStartPage) {
+            
+            self.pageNum = self.pageNum - 1;
+        }
     }
 }
 
-- (void)stopLoadingAndPageInit {
-    
-    [self stopLoading];
-    if (self.pageNum > YYProjectStartPage) {
-        
-        self.pageNum = self.pageNum - 1;
-    }
-}
-
-
-
-
-//=======================================================================================================
-
+#pragma mark - Action
 
 - (void)btnSettingBackgroundImageViewForBtn:(UIButton *)button urlStr:(NSString *)urlStr {
     
@@ -406,35 +494,6 @@
 
 
 
-- (NSString *)nullStrSetting:(NSString *)str {
-    
-    if (str == nil) {
-        
-        return @"";
-    } else {
-        
-        return str;
-    }
-}
-
-- (CGFloat)multiplesForPhone {
-    
-    if (IS_IPHONE_6) {
-        
-        return Scale_To_iPhone6;
-    } else if (IS_IPHONE_6P) {
-        
-        return Scale_To_iPhone6P;
-    } else {
-        
-        return 1.0f;
-    }
-}
-
-
-
-
-
 
 - (void)showDataEmptyTip:(NSString *)tip positionY:(CGFloat)y {
     
@@ -456,23 +515,12 @@
     self.dataEmptyTipLabel.hidden = YES;
 }
 
-- (NSDate *)obtainNowDateFromatAnDate:(NSDate *)anyDate {
-    
-    //设置源日期时区
-    NSTimeZone *sourceTimeZone = [NSTimeZone timeZoneWithAbbreviation:@"UTC"];//或GMT
-    //设置转换后的目标日期时区
-    NSTimeZone *destinationTimeZone = [NSTimeZone localTimeZone];
-    //得到源日期与世界标准时间的偏移量
-    NSInteger sourceGMTOffset = [sourceTimeZone secondsFromGMTForDate:anyDate];
-    //目标日期与本地时区的偏移量
-    NSInteger destinationGMTOffset = [destinationTimeZone secondsFromGMTForDate:anyDate];
-    //得到时间偏移量的差值
-    NSTimeInterval interval = destinationGMTOffset - sourceGMTOffset;
-    //转为现在时间
-    NSDate *destinationDateNow = [[NSDate alloc] initWithTimeInterval:interval sinceDate:anyDate];
-    
-    return destinationDateNow;
-}
+
+
+
+
+
+
 
 - (id)isCorrectViewWithClass:(Class)aClass subView:(id)sender {
     
@@ -492,131 +540,30 @@
     }
 }
 
-- (NSString *)obtainCurrentLanguage {
+
+
+
+
+
+
+
+- (CGFloat)multiplesForPhone {
     
-    //Hans简体中文、Hant繁体中文
-    NSArray *languages = [NSLocale preferredLanguages];
-    return [languages objectAtIndex:0];
+    if (IS_IPHONE_6) {
+        
+        return Scale_To_iPhone6;
+    } else if (IS_IPHONE_6P) {
+        
+        return Scale_To_iPhone6P;
+    } else {
+        
+        return 1.0f;
+    }
 }
+
+
 
 #pragma mark - Notification
-
-- (void)notificationTestHandle:(NSNotification *)notification {
-    
-    if ([[notification object] isKindOfClass:[NSError class]]) {
-        
-        //打印错误信息
-        NSError *error = (NSError *)[notification object];
-        [self showHUDWithText:[NSString codeDescription:[error code]] mode:MBProgressHUDModeText yOffset:[self HUDOffsetY] font:YYProjectHUDTipTextFont];
-        [self hide:YES afterDelay:YYProjectHUDTipTime];
-        
-    } else {
-        
-        id responseObject = [notification object];
-        NSNumber *responseStatus = (NSNumber *)[[responseObject objectForKey:@"status"] objectForKey:@"succeed"];
-        
-        //请求失败或者是重新登录
-        if ([[responseStatus stringValue] isEqualToString:YYProjectStatusFailed] ||
-            [[responseStatus stringValue] isEqualToString:YYProjectStatusLoginFirst]) {//失败
-            
-            NSString *responseTip = (NSString *)[[responseObject objectForKey:@"status"] objectForKey:@"error_desc"];
-            [self showHUDWithText:responseTip mode:MBProgressHUDModeText yOffset:[self HUDOffsetY] font:YYProjectHUDTipTextFont];
-            
-            //重新登录
-            if ([[responseStatus stringValue] isEqualToString:YYProjectStatusLoginFirst]) {
-                
-                [self performSelector:@selector(showLogin:) withObject:nil afterDelay:YYProjectHUDTipTime];
-                
-            } else {
-                
-                [self hide:YES afterDelay:YYProjectHUDTipTime];
-            }
-            
-        } else {//成功
-            
-            [self hide:YES];
-            
-            NSArray *array = (NSArray *)[responseObject objectForKey:@"data"];
-            
-            if (!self.datas && [array count] > 0) {
-                
-                self.datas = [[NSMutableArray alloc] init];
-            }
-            for (NSDictionary *dic in array) {
-                
-                YYTestData *data = [YYTestData mj_objectWithKeyValues:dic];
-                [self.datas addObject:data];
-            }
-            
-            [self.tableView1 reloadData];
-        }
-    }
-}
-
-- (void)notificationPageLoadHandle:(NSNotification *)notification {
-    
-    if ([[notification object] isKindOfClass:[NSError class]]) {
-        
-        NSError *error = (NSError *)[notification object];
-        [self showHUDWithText:[NSString codeDescription:[error code]] mode:MBProgressHUDModeText yOffset:[self HUDOffsetY] font:YYProjectHUDTipTextFont];
-        [self hide:YES afterDelay:YYProjectHUDTipTime];
-        
-        [self stopLoadingAndPageInit];
-        
-    } else {
-        
-        id responseObject = [notification object];
-        NSNumber *responseStatus = (NSNumber *)[[responseObject objectForKey:@"status"] objectForKey:@"succeed"];
-        
-        if ([[responseStatus stringValue] isEqualToString:YYProjectStatusFailed] ||
-            [[responseStatus stringValue] isEqualToString:YYProjectStatusLoginFirst]) {//失败
-            
-            NSString *responseTip = (NSString *)[[responseObject objectForKey:@"status"] objectForKey:@"error_desc"];
-            [self showHUDWithText:responseTip mode:MBProgressHUDModeText yOffset:[self HUDOffsetY] font:YYProjectHUDTipTextFont];
-            
-            if ([[responseStatus stringValue] isEqualToString:YYProjectStatusLoginFirst]) {
-                
-                [self performSelector:@selector(showLogin:) withObject:nil afterDelay:YYProjectHUDTipTime];
-                
-            } else {
-                
-                [self hide:YES afterDelay:YYProjectHUDTipTime];
-            }
-            
-            [self stopLoadingAndPageInit];
-            
-        } else {//成功
-            
-            [self hide:YES];
-            
-            if (self.pageNum <= YYProjectStartPage) {
-                
-                [self.datas removeAllObjects];
-            }
-            
-            NSArray *array = (NSArray *)[responseObject objectForKey:@"data"];
-            
-            [self stopLoading];
-            if ([array count] <= 0 && self.pageNum > YYProjectStartPage) {
-                
-                self.pageNum = self.pageNum - 1;
-            }
-            
-            if (!self.datas && [array count] > 0) {
-                
-                self.datas = [[NSMutableArray alloc] init];
-            }
-            for (NSDictionary *dic in array) {
-                
-                YYTestData *data = [YYTestData mj_objectWithKeyValues:dic];
-                [self.datas addObject:data];
-            }
-            
-            //BUG FIX:提前刷新，数据崩溃
-            [self.tableView1 reloadData];
-        }
-    }
-}
 
 - (void)keyboardWillShow:(NSNotification *)notification {
     
@@ -652,20 +599,49 @@
 
 #pragma mark - MBProgressHUDDelegate
 
+- (void)showIndeterminateHUD {
+    
+    [self showHUDWithText:nil mode:MBProgressHUDModeIndeterminate yOffset:0 font:0];
+}
+
+- (void)hideIndeterminateHUD {
+    
+    [SVProgressHUD dismiss];
+}
+
+- (void)showErrorMessage:(NSString *)text {
+    
+    [self showHUDWithText:text];
+    [self hide:YES afterDelay:YYProjectHUDTipTime];
+}
+
+- (void)showHUDWithText:(NSString *)text {
+    
+    [self showHUDWithText:text mode:MBProgressHUDModeText yOffset:[self HUDOffsetY] font:YYProjectHUDTipTextFont];
+}
+
 - (void)showHUDWithText:(NSString *)text mode:(MBProgressHUDMode)mode yOffset:(CGFloat)yOffset font:(CGFloat)fontSize {
     
-    if (!self.HUD) {
+    if (mode == MBProgressHUDModeText) {
         
-        self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        [self.view addSubview:self.HUD];
-        self.HUD.delegate = self;
+        if (!self.HUD) {
+            
+            self.HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+            [self.view addSubview:self.HUD];
+            self.HUD.delegate = self;
+            self.HUD.contentColor = [[YYConstants sharedManager] YYProjectDefaultColor];
+            self.HUD.bezelView.color = [UIColor whiteColor];
+        }
+        
+        self.HUD.label.font = [UIFont systemFontOfSize:fontSize];
+        self.HUD.offset = CGPointMake(self.HUD.offset.x, yOffset);
+        self.HUD.mode = mode;
+        self.HUD.label.text = text;
+        [self.HUD showAnimated:YES];
+    } else {
+        
+        [SVProgressHUD show];
     }
-    
-    self.HUD.label.font = [UIFont systemFontOfSize:fontSize];
-    self.HUD.offset = CGPointMake(self.HUD.offset.x, yOffset);
-    self.HUD.mode = mode;
-    self.HUD.label.text = text;
-    [self.HUD showAnimated:YES];
 }
 
 - (void)hide:(BOOL)animated {

@@ -18,6 +18,8 @@
  */
 - (void)borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor;
 
+- (void)cornerRadius:(CGFloat)cornerRadius;
+
 - (void)borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor masksToBounds:(BOOL)masksToBounds;
 
 - (void)borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor cornerRadius:(CGFloat)cornerRadius masksToBounds:(BOOL)masksToBounds;

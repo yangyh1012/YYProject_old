@@ -15,6 +15,11 @@
     [self borderWidth:borderWidth borderColor:borderColor cornerRadius:0 masksToBounds:YES];
 }
 
+- (void)cornerRadius:(CGFloat)cornerRadius {
+    
+    [self borderWidth:0 borderColor:nil cornerRadius:cornerRadius masksToBounds:YES];
+}
+
 - (void)borderWidth:(CGFloat)borderWidth borderColor:(UIColor *)borderColor masksToBounds:(BOOL)masksToBounds {
     
     [self borderWidth:borderWidth borderColor:borderColor cornerRadius:0 masksToBounds:masksToBounds];
@@ -24,8 +29,12 @@
     
     UIView *view = self;
     
-    view.layer.borderWidth = borderWidth;
-    view.layer.borderColor = borderColor.CGColor;
+    if (!(borderWidth == 0 &&
+          borderColor == nil)) {
+        
+        view.layer.borderWidth = borderWidth;
+        view.layer.borderColor = borderColor.CGColor;
+    }
     
     if (cornerRadius != 0) {
         

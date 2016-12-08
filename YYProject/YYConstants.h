@@ -32,34 +32,32 @@
 
 #define Swizzle_Flag NO
 
-//***************************数据名称定义 start***************************************//
+#pragma mark - 数据名称定义
 
 extern NSString *const YYProjectSid;
 extern NSString *const YYProjectStatusFailed;
 extern NSString *const YYProjectStatusSuccess;
 extern NSString *const YYProjectStatusLoginFirst;
 
-//***************************数据名称定义 end***************************************//
-
-//***************************界面定义 start***************************************//
-
-extern NSInteger const YYProjectStartPage;
+#pragma mark - 界面定义
 
 extern CGFloat const YYProjectHUDLoadTextFont;
 extern CGFloat const YYProjectHUDTipTextFont;
 extern CGFloat const YYProjectHUDTipTime;
+
 extern NSString *const YYProjectHUDRequestTipText;
 extern NSString *const YYProjectHUDLoadTipText;
+extern NSString *const YYProjectHUDFunctionDevelopingText;
 
-//***************************界面定义 end***************************************//
-
-
-
-//***************************http请求通知名称定义 start***************************************//
+#pragma mark - 请求名称定义
 
 extern NSString *const YYNotificationLoginFirst;
 
+
 extern NSString *const YYNotificationPageLoad;
+
+extern NSInteger const YYProjectStartPage;
+
 
 extern NSString *const YYTestNotification;
 
@@ -68,7 +66,7 @@ extern NSString *const YYNotificationKey;
 
 extern NSString *const YYLocationNotification;
 
-//***************************http请求通知名称定义 end***************************************//
+#pragma mark - YYConstants
 
 @interface YYConstants : NSObject
 

@@ -12,8 +12,28 @@
 
 + (instancetype)sharedManager;
 
-- (void)setUserDefaultStringValue:(id)obj WithKey:(NSString *)key;
 
-- (NSString *)userDefaultStringValueWithKey:(NSString *)key;
+
+- (void)setUserDefaultObjectValue:(id)obj WithKey:(NSString *)key;
+
+- (id)userDefaultObjectValueWithKey:(NSString *)key;
+
+
+/**
+ *  可以用来保存token或者任何重要的字符串，因为此方法通过AES256加密
+ *
+ *  @param str 需要加密的字符串
+ *  @param key 私钥
+ */
+- (void)setUserDefaultSecretStringValue:(NSString *)str WithKey:(NSString *)key;
+
+/**
+ *  解密
+ *
+ *  @param key 私钥
+ *
+ *  @return 解密后的字符串
+ */
+- (NSString *)userDefaultSecretStringValueWithKey:(NSString *)key;
 
 @end

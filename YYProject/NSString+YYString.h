@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "NSData+YYData.h"
 
 @interface NSString (YYString)
 
@@ -44,4 +45,59 @@
  */
 + (NSString *)codeDescription:(NSInteger)code;
 
+/**
+ *  将为nil的字符串赋值@""
+ *
+ *  @param str 可能为nil值的字符串
+ *
+ *  @return 为nil时赋值@""；不为nil时，返回原值。
+ */
++ (NSString *)nullStrSetting:(NSString *)str;
+
+/**
+ *  获得当前语言
+ *
+ *  @return 语言字符串
+ */
++ (NSString *)obtainCurrentLanguage;
+
 @end
+
+#pragma mark - NSString - AESString
+
+@interface NSString (AESString)
+
+/**
+ *  AES加密
+ *
+ *  @param key 私钥
+ *
+ *  @return 加密字符串
+ */
+- (NSString *)encryptWithKey:(NSString *)key;
+
+/**
+ *  AES解密
+ *
+ *  @param key 私钥
+ *
+ *  @return 解密字符串
+ */
+- (NSString *)decryptWithKey:(NSString *)key;
+
+@end
+
+#pragma mark - NSString - CheckFormat
+
+@interface NSString (CheckFormat)
+
++ (NSString *)isValidMobile:(NSString *)string;
+
++ (NSString *)isValidPassword:(NSString *)string;
+
++ (NSString *)isValidCode:(NSString *)string;
+
++ (NSString *)isValidQQ:(NSString *)string;
+
+@end
+

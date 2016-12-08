@@ -37,6 +37,71 @@ typedef NS_ENUM(NSInteger, YYBaseViewControllerTestType) {
 
 
 /**
+ *  下拉刷新调用此方法，此方法调用requestPageDataWithType方法
+ */
+- (void)loadListDataForStart;
+
+/**
+ *  上拉刷新调用此方法，此方法调用requestPageDataWithType方法
+ */
+- (void)loadListDataForMore;
+
+/**
+ *  只请求url，其他参数都为空
+ *
+ *  @param urlStr url字符串
+ */
+- (void)requestDataUrlStr:(NSString *)urlStr;
+
+
+- (void)requestDataUrlStr:(NSString *)urlStr loadFlag:(BOOL)loadFlag;
+
+/**
+ *  添加更多复杂的参数
+ *
+ *  @param parameters 参数
+ */
+- (void)requestDataParam:(NSDictionary *)parameters;
+
+- (void)requestDataParam:(NSDictionary *)parameters loadFlag:(BOOL)loadFlag;
+
+/**
+ *  请求成功时执行此方法
+ *
+ *  @param responseObject 数据
+ *  @param otherParams    参数
+ */
+- (void)requestSuccess:(id)responseObject otherParams:(id)otherParams;
+
+
+
+
+
+
+
+
+
+- (CGFloat)multiplesForPhone;
+
+/**
+ *  根据子视图得到某个特定类型的父视图View
+ *
+ *  @param aClass 特定类型
+ *  @param sender 子视图
+ *
+ *  @return 某个特定类型的View
+ */
+- (id)isCorrectViewWithClass:(Class)aClass subView:(id)sender;
+
+
+
+
+
+
+
+
+
+/**
  *  按钮设置网络背景图(默认 UIViewContentModeScaleAspectFit)
  *
  *  @param button 按钮
@@ -45,6 +110,12 @@ typedef NS_ENUM(NSInteger, YYBaseViewControllerTestType) {
 - (void)btnSettingBackgroundImageViewForBtn:(UIButton *)button urlStr:(NSString *)urlStr;
 
 - (void)btnSettingBackgroundImageViewForBtn:(UIButton *)button urlStr:(NSString *)urlStr contentModeFlag:(BOOL)flag;
+
+
+
+
+
+
 
 
 
@@ -66,16 +137,9 @@ typedef NS_ENUM(NSInteger, YYBaseViewControllerTestType) {
 
 
 
-- (void)requestResult:(id)responseObject URLString:(NSString *)URLString otherParams:(id)otherParams;
-
-- (void)requestFailure:(NSString *)URLString error:(NSError *)error otherParams:(id)otherParams;
 
 
 
-
-- (CGFloat)multiplesForPhone;
-
-- (NSString *)nullStrSetting:(NSString *)str;
 
 
 /**
@@ -89,31 +153,23 @@ typedef NS_ENUM(NSInteger, YYBaseViewControllerTestType) {
 - (void)hideDataEmptyTip;
 
 
-/**
- *  时差计算
- *
- *  @param anyDate 日期
- *
- *  @return 根据时差转换后的日期
- */
-- (NSDate *)obtainNowDateFromatAnDate:(NSDate *)anyDate;
+
+
+
+
+
+
 
 /**
- *  根据子视图得到某个特定类型的父视图View
- *
- *  @param aClass 特定类型
- *  @param sender 子视图
- *
- *  @return 某个特定类型的View
+ *  显示加载条
  */
-- (id)isCorrectViewWithClass:(Class)aClass subView:(id)sender;
+- (void)showIndeterminateHUD;
 
-/**
- *  获得当前语言
- *
- *  @return 获得当前语言
- */
-- (NSString *)obtainCurrentLanguage;
+- (void)hideIndeterminateHUD;
+
+- (void)showHUDWithText:(NSString *)text;
+
+- (void)showErrorMessage:(NSString *)text;//会自动隐藏
 
 /**
  *  显示加载提示框

@@ -18,7 +18,7 @@
         
         _sharedClient = [[YYNetManage alloc] initWithBaseURL:[NSURL URLWithString:YYProjectBaseUrl]];
         _sharedClient.securityPolicy = [AFSecurityPolicy policyWithPinningMode:0];
-        _sharedClient.responseSerializer.acceptableContentTypes =[NSSet setWithObjects:@"text/plain", @"text/json", @"text/javascript", @"text/html", @"text/xml", @"application/xml", @"application/json", @"application/json;charset=UTF-8", nil];
+        _sharedClient.responseSerializer.acceptableContentTypes =[NSSet setWithObjects:@"text/plain", @"text/json", @"text/javascript", @"text/html", @"text/xml", @"application/xml", @"application/json", @"application/json;charset=UTF-8",@"image/png",@"image/jpeg",@"MultipartFile",@"multipart/form-data", nil];
     });
     
     return _sharedClient;

@@ -8,7 +8,7 @@
 
 #import "YYConstants.h"
 
-//***************************数据名称定义 start***************************************//
+#pragma mark - 数据名称定义
 
 NSString *const YYProjectSid = @"YYProjectSid_YYProject";
 
@@ -16,41 +16,34 @@ NSString *const YYProjectStatusFailed = @"0";
 NSString *const YYProjectStatusSuccess = @"1";
 NSString *const YYProjectStatusLoginFirst = @"2";
 
-//***************************数据名称定义 end***************************************//
-
-
-
-
-//***************************界面定义 start***************************************//
-
-NSInteger const YYProjectStartPage = 1;
+#pragma mark - 界面定义
 
 CGFloat const YYProjectHUDLoadTextFont = 20.0f;
 CGFloat const YYProjectHUDTipTextFont = 15.0f;
 CGFloat const YYProjectHUDTipTime = 1.5f;
-NSString *const YYProjectHUDRequestTipText = @"正在请求数据";
-NSString *const YYProjectHUDLoadTipText = @"正在加载数据";
 
-//***************************界面定义 end***************************************//
+NSString *const YYProjectHUDRequestTipText = @"";
+NSString *const YYProjectHUDLoadTipText = @"";
+NSString *const YYProjectHUDFunctionDevelopingText = @"功能即将上线，敬请期待...";
 
-
-
-
-
-//***************************http请求通知名称定义 start***************************************//
-NSString *const YYTestNotification = @"YYTestNotification_YYProject";
+#pragma mark - 请求名称定义
 
 NSString *const YYNotificationLoginFirst = @"YYTestNotification_YYNotificationLoginFirst";
 
+
 NSString *const YYNotificationPageLoad = @"YYTestNotification_YYNotificationPageLoad";
+
+NSInteger const YYProjectStartPage = 1;
+
+
+NSString *const YYTestNotification = @"YYTestNotification_YYProject";
 
 
 NSString *const YYNotificationKey = @"YYNotification_YYNotificationKey";
 
 NSString *const YYLocationNotification = @"YYLocationNotification";
 
-//***************************http请求通知名称定义 end***************************************//
-
+#pragma mark - YYConstants
 
 @implementation YYConstants
 
@@ -73,7 +66,7 @@ static YYConstants *sharedManager = nil;
 
 - (UIColor *)YYProjectDefaultColor {
     
-    return RGB_Color(166, 137, 45);
+    return RGB_Color(0, 122, 255);
 }
 
 - (UIColor *)YYProjectLightColor {

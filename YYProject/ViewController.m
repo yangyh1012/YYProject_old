@@ -13,11 +13,13 @@
 
 @property (nonatomic, strong) NSMutableArray *datas;
 
-@property (nonatomic, strong) UIAlertController *faceImageAlertController;
 
 @property (nullable, nonatomic, strong) UITableView *tableView;
 
 @property (nullable, nonatomic, strong) UICollectionView *collectionView;
+
+
+@property (nonatomic, strong) UIAlertController *faceImageAlertController;
 
 @end
 
@@ -27,80 +29,12 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    //============================数据初始化============================
-    
-    self.title = @"这是标题";
-    
-    //============================数据请求============================
-    
-    BOOL requestFlag = NO;
-    if (requestFlag) {
-        
-        NSMutableDictionary *params = nil;
-        NSMutableDictionary *otherParams = [[NSMutableDictionary alloc] initWithObjectsAndKeys:YYLocationNotification,YYNotificationKey, nil];
-        [self requestDataList:params otherParams:otherParams];
-    }
-    
-    [self viewLoadSettingForTitle:@"这是标题"
-                      navItemFlag:NO
-                        tableFlag:NO
-                    tablePageFlag:NO
-                   collectionFlag:NO
-               collectionPageFlag:NO
-                      requestFlag:NO
-                     keyboardFlag:NO];
-}
-
-- (void)viewLoadSettingForTitle:(NSString *)title
-                    navItemFlag:(BOOL)navItemFlag
-                      tableFlag:(BOOL)tableFlag
-                  tablePageFlag:(BOOL)tablePageFlag
-                 collectionFlag:(BOOL)collectionFlag
-             collectionPageFlag:(BOOL)collectionPageFlag
-                    requestFlag:(BOOL)requestFlag
-                   keyboardFlag:(BOOL)keyboardFlag {
-    
-    //============================添加视图============================
-    
-    if (navItemFlag) {
-        
-        //添加导航条
-        [self addNavItem];
-    }
-    
-    if (tableFlag) {
-        
-        //添加表格
-        [self addTableView:tablePageFlag];
-    }
-    
-    if (collectionFlag) {
-        
-        //添加集合视图
-        [self addCollectionView:collectionPageFlag];
-    }
-    
-    //============================数据请求============================
-    
-    if (requestFlag) {
-        
-        NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"sd_id",@"sd_id", nil];
-        NSMutableDictionary *otherParams = [[NSMutableDictionary alloc] initWithObjectsAndKeys:YYTestNotification,YYNotificationKey, nil];
-        [self requestDataList:params otherParams:otherParams];
-    }
-    
-    //============================添加通知============================
-    
-    if (keyboardFlag) {
-        
-        //注册键盘出现通知
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillShow:)
-                                                     name:UIKeyboardWillShowNotification object:nil];
-        //注册键盘隐藏通知
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(keyboardWillHide:)
-                                                     name:UIKeyboardWillHideNotification object:nil];
+    //约束动画
+    {
+        [UIView animateWithDuration:0.3f animations:^{
+            
+            [self.view layoutIfNeeded];
+        }];
     }
 }
 
@@ -124,16 +58,6 @@
     [super viewDidDisappear:animated];
 }
 
-- (void)dealloc {
-    
-    //解除键盘出现通知
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillShowNotification object:nil];
-    //解除键盘隐藏通知
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillHideNotification object:nil];
-}
-
 - (void)didReceiveMemoryWarning {
     
     [super didReceiveMemoryWarning];
@@ -147,7 +71,7 @@
     UIButton *leftButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [leftButton setTitle:@"厦门" forState:UIControlStateNormal];
     [leftButton addTarget:self action:@selector(leftNavigationItemHandle:) forControlEvents:UIControlEventTouchUpInside];
-//    leftButton.titleLabel.font = [UIFont systemFontOfSize:16.0f];
+    leftButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
     leftButton.frame = CGRectMake(0, 0, 40, 18);
     [leftButton sizeToFit];
     
@@ -155,6 +79,7 @@
     [rightButton setImage:[UIImage imageNamed:@"image"] forState:UIControlStateNormal];
     [rightButton addTarget:self action:@selector(rightNavigationItemHandle:) forControlEvents:UIControlEventTouchUpInside];
     rightButton.frame = CGRectMake(0, 0, 30, 30);
+    [rightButton sizeToFit];
     
     UIBarButtonItem *leftMenuButton = [[UIBarButtonItem alloc] initWithCustomView:leftButton];
     UIBarButtonItem *rightMenuButton = [[UIBarButtonItem alloc] initWithCustomView:rightButton];
@@ -236,7 +161,7 @@
 
 - (void)leftNavigationItemHandle:(id)sender {
     
-    //TODO:leftNavigationItemHandle
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)rightNavigationItemHandle:(id)sender {
@@ -249,10 +174,9 @@
     [self.view endEditing:YES];
     
     NSString *passwordTextFieldText = @"";
-    if ([NSString isStringEmpty:passwordTextFieldText]) {
+    if ([NSString isValidPassword:passwordTextFieldText]) {
         
-        [self showHUDWithText:@"密码不得为空" mode:MBProgressHUDModeText yOffset:[self HUDOffsetY] font:YYProjectHUDTipTextFont];
-        [self hide:YES afterDelay:YYProjectHUDTipTime];
+        [self showErrorMessage:[NSString isValidPassword:passwordTextFieldText]];
         
         return ;
     }
@@ -288,180 +212,96 @@
 #pragma mark - Action
 
 /**
- *  下拉加载数据
+ *  一段代码完成上下拉刷新
  */
-- (void)loadListDataForStart {
+- (void)requestPageDataWithType:(NSInteger)type {
     
-    self.pageNum = YYProjectStartPage;
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"sd_id",@"sd_id", nil];
-    NSMutableDictionary *otherParams = [[NSMutableDictionary alloc] initWithObjectsAndKeys:YYTestNotification,YYNotificationKey, nil];
-    [self requestDataList:params otherParams:otherParams];
-}
-
-/**
- *  上拉加载数据
- */
-- (void)loadListDataForMore {
+    NSString *URLString = YYLocationUrl;
+    NSDictionary *params = @{@"page":[NSNumber numberWithInteger:self.pageNum]};
+    NSDictionary *otherParams = @{@"tableView":self.tableView,
+                                  @"YYNotificationPageLoad":[NSNumber numberWithInteger:type]};
     
-    self.pageNum = self.pageNum + 1;
-    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithObjectsAndKeys:@"sd_id",@"sd_id", nil];
-    NSMutableDictionary *otherParams = [[NSMutableDictionary alloc] initWithObjectsAndKeys:YYTestNotification,YYNotificationKey, nil];
-    [self requestDataList:params otherParams:otherParams];
-}
-
-/**
- *  停止刷新
- */
-- (void)stopLoading {
+    NSDictionary *parameters = @{@"URLString":URLString,
+                                 @"parameters":params,
+                                 @"otherParams":otherParams};
     
-    if (self.pageNum == YYProjectStartPage) {
-        
-        [self.tableView.mj_header endRefreshing];
-    } else {
-        
-        [self.tableView.mj_footer endRefreshing];
-    }
-}
-
-- (void)backHandle {
-    
-    [self.navigationController popViewControllerAnimated:YES];
+    [self requestDataParam:parameters];
 }
 
 #pragma mark - Request
 
-- (void)requestDataList:(id)requestParams otherParams:(id)otherParams {
+/**
+ *  请求
+ */
+- (void)requestDataList {
     
-    [self showHUDWithText:YYProjectHUDRequestTipText mode:MBProgressHUDModeIndeterminate yOffset:0 font:YYProjectHUDLoadTextFont];
-    [[YYCommunication sharedManager] httpRequest:YYLocationUrl parameters:requestParams otherParams:otherParams mode:YYCommunicationModePost];
+    NSString *URLString = YYLocationUrl;
+    NSDictionary *params = @{};
+    NSDictionary *otherParams = @{};
+    
+    NSDictionary *parameters = @{@"URLString":URLString,
+                                 @"parameters":params,
+                                 @"otherParams":otherParams,
+                                 @"mode":@1,
+                                 @"uidAndTokenFlag":@1};
+    
+    [self requestDataParam:parameters];
 }
 
+/**
+ *  数据成功返回的处理
+ */
 - (void)requestSuccess:(id)responseObject otherParams:(id)otherParams {
-    
+ 
     NSString *notificationName = [otherParams objectForKey:YYNotificationKey];
     
-    if ([notificationName isEqualToString:YYTestNotification]) {
+    if ([notificationName isEqualToString:YYLocationUrl]) {
         
-        [self hide:YES];
+        NSArray *result = [responseObject objectForKey:@"results"];
         
-        NSArray *array = (NSArray *)[responseObject objectForKey:@"data"];
-        
-        if (!self.datas && [array count] > 0) {
+        if ([result count] > 0) {
             
-            self.datas = [[NSMutableArray alloc] init];
-        }
-        for (NSDictionary *dic in array) {
+            if (!self.datas) {
+                
+                self.datas = [[NSMutableArray alloc] init];
+            }
             
-            YYTestData *data = [YYTestData mj_objectWithKeyValues:dic];
-            [self.datas addObject:data];
-        }
-        
-        if ([array count] <= 0) {
+            //如果是在第一页，就去掉全部数据
+            if (self.pageNum == 1) {
+                
+                [self.datas removeAllObjects];
+            }
             
-            [self showDataEmptyTip:@"暂无数据" positionY:0];
+            [self.datas addObjectsFromArray:result];
+            
+            [self.tableView reloadData];
+            
         } else {
             
-            [self hideDataEmptyTip];
+            self.pageNum = (self.pageNum - 1 == 0)?YYProjectStartPage:(self.pageNum - 1);
+            [self showErrorMessage:@"无更多数据"];
         }
         
-        [self.tableView reloadData];
-    } else if ([notificationName isEqualToString:@""]) {
-        
-        [self hide:YES];
-        
-        if (self.pageNum <= YYProjectStartPage) {
+        NSString *pageLoadStr = [otherParams objectForKey:YYNotificationPageLoad];
+        if ([pageLoadStr isEqualToString:@"0"]) {
             
-            [self.datas removeAllObjects];
-        }
-        
-        NSArray *array = (NSArray *)[responseObject objectForKey:@"data"];
-        
-        if (!self.datas && [array count] > 0) {
-            
-            self.datas = [[NSMutableArray alloc] init];
-        }
-        for (NSDictionary *dic in array) {
-            
-            YYTestData *data = [YYTestData mj_objectWithKeyValues:dic];
-            [self.datas addObject:data];
-        }
-        
-        if ([array count] <= 0) {
-            
-            [self showDataEmptyTip:@"暂无数据" positionY:0];
+            [self.tableView.mj_header endRefreshing];
         } else {
             
-            [self hideDataEmptyTip];
+            [self.tableView.mj_footer endRefreshing];
         }
         
-        //BUG FIX:提前刷新，数据崩溃 stopLoading之后跟着reloadData
-        [self stopLoading];
-        [self.tableView reloadData];
+    } else if ([notificationName isEqualToString:YYProjectBaseUrl]) {
         
-        if ([array count] <= 0 && self.pageNum > YYProjectStartPage) {
-            
-            self.pageNum = self.pageNum - 1;
-        }
-        
-    } else if ([notificationName isEqualToString:@""]) {
-        
-        NSString *responseTip = (NSString *)[[responseObject objectForKey:@"data"] objectForKey:@"msg"];
-        [self showHUDWithText:responseTip mode:MBProgressHUDModeText yOffset:[self HUDOffsetY] font:YYProjectHUDTipTextFont];
-        [self performSelector:@selector(backHandle) withObject:nil afterDelay:YYProjectHUDTipTime];
-        
-    } else if ([notificationName isEqualToString:YYLocationNotification]) {
-        
-        [self hide:YES];
-        
-        NSArray *datas = (NSArray *)[responseObject objectForKey:@"allcity"];
-        DLog(@"datas:%@",datas);
+        [self showHUDWithText:[otherParams objectForKey:@"RespDesc"]];
+        [self performSelector:@selector(bactToPreController:) withObject:nil afterDelay:YYProjectHUDTipTime];
     }
 }
 
-- (void)requestFailure:(NSString *)URLString error:(nullable NSError *)error otherParams:(id)otherParams {
+- (void)bactToPreController:(id)sender {
     
-    NSString *notificationName = [otherParams objectForKey:YYNotificationKey];
-    
-    if ([notificationName isEqualToString:YYLocationNotification]) {
-     
-        //打印错误信息
-        [self showHUDWithText:[NSString codeDescription:[error code]] mode:MBProgressHUDModeText yOffset:[self HUDOffsetY] font:YYProjectHUDTipTextFont];
-        [self hide:YES afterDelay:YYProjectHUDTipTime];
-    }
-}
-
-#pragma mark - Notification
-
-- (void)keyboardWillShow:(NSNotification *)notification {
-    
-    NSDictionary *info = [notification userInfo];
-    
-    /*说明：UIKeyboardFrameEndUserInfoKey获得键盘的尺寸，键盘高度
-     
-     */
-    NSValue *value = [info objectForKey:UIKeyboardFrameEndUserInfoKey];
-    CGSize keyboardSize = [value CGRectValue].size;
-    
-    DLog(@"%.f",keyboardSize.height);
-    
-//    self.tableViewBottomConstraint.constant = keyboardSize.height;
-//    [self updateViewConstraints];
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification {
-    
-    NSDictionary *info = [notification userInfo];
-    
-    /*说明：UIKeyboardFrameEndUserInfoKey获得键盘的尺寸，键盘高度
-     
-     */
-    NSValue *value = [info objectForKey:UIKeyboardFrameEndUserInfoKey];
-    CGSize keyboardSize = [value CGRectValue].size;
-    
-    DLog(@"%.f",keyboardSize.height);
-    
-//    self.tableViewBottomConstraint.constant = self.tableViewBottomConstraint.constant - keyboardSize.height;
-//    [self updateViewConstraints];
+    [self hide:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - StoryboardSegue

@@ -26,6 +26,8 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     DLog(@"%@",paths);//DLog
     
+    //设置导航栏的字体颜色
+    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor],NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue" size:18.0f]}];
     
     return YES;
 }

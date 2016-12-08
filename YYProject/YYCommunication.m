@@ -29,147 +29,182 @@ static YYCommunication *sharedManager = nil;
     return self;
 }
 
-+ (instancetype)sharedManager {
+- (void)httpRequest:(NSString *)URLString {
     
-    static dispatch_once_t once;
-    dispatch_once(&once, ^{
+    [self httpRequest:URLString parameters:nil otherParams:nil mode:YYCommunicationModePost uidAndTokenFlag:YES imageData:nil];
+}
+
+- (void)httpRequestWithAllPara:(NSDictionary *)allPara {
+    
+    //普通请求的例子
+//    NSDictionary *parameters = @{@"URLString":URLString,
+//                                 @"parameters":@{@"":@""},
+//                                 @"otherParams":@{@"":@""},
+//                                 @"mode":@1,
+//                                 @"uidAndTokenFlag":@1};
+    
+    //图片上传的例子
+//    NSDictionary *parameters = @{@"URLString":URLString,
+//                                 @"parameters":@{@"":@""},
+//                                 @"otherParams":@{@"":@""},
+//                                 @"imageData":imageData,
+//                                 @"uidAndTokenFlag":@1};
+    
+    NSString *URLString = allPara[@"URLString"];
+    
+    NSDictionary *parameters = allPara[@"parameters"];
+    NSDictionary *otherParams = allPara[@"otherParams"];
+    
+    NSNumber *modeNum = allPara[@"mode"];
+    YYCommunicationMode mode = YYCommunicationModePost;
+    if (modeNum) {
+     
+        mode = [modeNum integerValue];
+    }
+    
+    NSNumber *uidAndTokenNum = allPara[@"uidAndTokenFlag"];
+    BOOL uidAndTokenFlag = YES;
+    if (uidAndTokenNum) {
         
-        sharedManager = [[self alloc] init];
-    });
-    return sharedManager;
+        if ([uidAndTokenNum integerValue] == 0) {
+            
+            uidAndTokenFlag = NO;
+        }
+    }
+    
+    NSData *imageData = allPara[@"imageData"];
+    
+    [self httpRequest:URLString parameters:parameters otherParams:otherParams mode:YYCommunicationModePost uidAndTokenFlag:uidAndTokenFlag imageData:imageData];
 }
 
-- (void)httpRequest:(NSString *)URLString parameters:(id)parameters otherParams:(id)otherParams mode:(YYCommunicationMode)mode {
-    
-    [self httpRequest:URLString parameters:parameters otherParams:otherParams mode:mode uidAndTokenFlag:NO];
-}
 
-- (void)httpRequest:(NSString *)URLString parameters:(id)parameters otherParams:(id)otherParams mode:(YYCommunicationMode)mode uidAndTokenFlag:(BOOL)uidAndTokenFlag {
-    
-    [self httpRequest:URLString parameters:parameters otherParams:otherParams mode:mode uidAndTokenFlag:uidAndTokenFlag imageData:nil imageParamName:nil];
-}
 
-- (void)httpRequest:(NSString *)URLString parameters:(id)parameters otherParams:(id)otherParams mode:(YYCommunicationMode)mode uidAndTokenFlag:(BOOL)uidAndTokenFlag imageData:(NSData *)data imageParamName:(NSString *)imageParamName {
+
+
+
+
+
+- (void)httpRequest:(NSString *)URLString parameters:(NSDictionary *)parameters otherParams:(NSDictionary *)otherParams mode:(YYCommunicationMode)mode uidAndTokenFlag:(BOOL)uidAndTokenFlag imageData:(NSData *)imageData {
     
-    NSDictionary *parametersDic = nil;
+    NSMutableDictionary *mutableParameters = nil;
     if (!parameters) {
         
-        parameters = [NSMutableDictionary dictionary];
+        mutableParameters = [[NSMutableDictionary alloc] init];
+    } else {
+        
+        mutableParameters = [parameters mutableCopy];
+    }
+    
+    NSMutableDictionary *mutableOtherParams = nil;
+    if (!otherParams) {
+        
+        mutableOtherParams = [[NSMutableDictionary alloc] initWithObjectsAndKeys:URLString,YYNotificationKey, nil];
+    } else {
+        
+        mutableOtherParams = [parameters mutableCopy];
+        [mutableOtherParams setObject:URLString forKey:YYNotificationKey];
     }
     
     if (uidAndTokenFlag) {
         
-        NSString *sid = [[YYDataHandle sharedManager] userDefaultStringValueWithKey:YYProjectSid];
-        
+        NSString *sid = [[YYDataHandle sharedManager] userDefaultSecretStringValueWithKey:YYProjectSid];
         if ([NSString isStringEmpty:sid]) {
             
             sid = @"";
         }
         
-        [parameters setObject:sid forKey:YYProjectSid];
-        parametersDic = [parameters copy];
-    } else {
-        
-        parametersDic = parameters;
+        [mutableParameters setObject:sid forKey:YYProjectSid];
     }
     
-    DLog(@"====================================================================================================");
-    DLog(@"请求的地址为：%@",URLString);
-    DLog(@"参数列表为：%@",parametersDic);
-    DLog(@"请求方式为：%@",@(mode));
-    DLog(@"通知名称为：%@",[otherParams objectForKey:YYNotificationKey]);
-    
+    //防止中文错误
     URLString = [URLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
-    if (!data) {
+    DLog(@"请求开始：：：");
+    
+    //不是图片上传时
+    if (!imageData) {
         
         if (mode == 0) {
             
-            NSURLSessionDataTask *dataTask = [[YYNetManage sharedManager] GET:URLString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            NSURLSessionDataTask *dataTask = [[YYNetManage sharedManager] GET:URLString parameters:mutableParameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
-                DLog(@"get请求成功，请求地址为：%@",URLString);
-                DLog(@"====================================================================================================");
-                
-                [self.delegate requestResult:responseObject URLString:URLString otherParams:otherParams];
+                [self requestSuccess:responseObject URLString:URLString parameters:mutableParameters otherParams:otherParams];
                 
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
-                DLog(@"get请求失败，请求地址为：%@",URLString);
-                DLog(@"get请求失败，错误原因：%@",[NSString codeDescription:[error code]]);
-                DLog(@"====================================================================================================");
-                
-                [self.delegate requestFailure:URLString error:error otherParams:otherParams];
-                
-                if (error.userInfo[@"com.alamofire.serialization.response.error.data"]) {
-                    
-                    DLog(@"com.alamofire.serialization.response.error.data: %@",[[NSString alloc] initWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] encoding:NSUTF8StringEncoding]);
-                }
+                [self requestFailure:error URLString:URLString parameters:mutableParameters otherParams:otherParams];
             }];
             
-            [self.requestDic setObject:dataTask forKey:[otherParams objectForKey:YYNotificationKey]];
+            //加入线程集合
+            [self.requestDic setObject:dataTask forKey:URLString];
             
         } else if (mode == 1) {
             
-            NSURLSessionDataTask *dataTask = [[YYNetManage sharedManager] POST:URLString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            NSURLSessionDataTask *dataTask = [[YYNetManage sharedManager] POST:URLString parameters:mutableParameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
-                DLog(@"post请求成功，请求地址为：%@",URLString);
-                DLog(@"====================================================================================================");
-                
-                [self.delegate requestResult:responseObject URLString:URLString otherParams:otherParams];
+                [self requestSuccess:responseObject URLString:URLString parameters:mutableParameters otherParams:otherParams];
                 
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
-                DLog(@"post请求失败，请求地址为：%@",URLString);
-                DLog(@"post请求失败，错误原因：%@",[NSString codeDescription:[error code]]);
-                DLog(@"====================================================================================================");
-                
-                [self.delegate requestFailure:URLString error:error otherParams:otherParams];
-                
-                if (error.userInfo[@"com.alamofire.serialization.response.error.data"]) {
-                    
-                    DLog(@"com.alamofire.serialization.response.error.data: %@",[[NSString alloc] initWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] encoding:NSUTF8StringEncoding]);
-                }
+                [self requestFailure:error URLString:URLString parameters:mutableParameters otherParams:otherParams];
             }];
             
-            [self.requestDic setObject:dataTask forKey:[otherParams objectForKey:YYNotificationKey]];
+            //加入线程集合
+            [self.requestDic setObject:dataTask forKey:URLString];
         }
+        
     } else {
         
-        if (mode == 1) {
+        NSData *paramData = [NSJSONSerialization dataWithJSONObject:mutableParameters options:NSJSONWritingPrettyPrinted error:nil];
+        
+        NSURLSessionDataTask *dataTask = [[YYNetManage sharedManager] POST:URLString parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
             
-            NSURLSessionDataTask *dataTask = [[YYNetManage sharedManager] POST:URLString parameters:parametersDic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-                
-                // 上传文件
-                NSString *fileName = [NSString stringWithFormat:@"%@.jpg", [NSString getCurrentTimeString]];
-                
-                //BUG FIX:name为图片上传的参数
-                [formData appendPartWithFileData:data name:imageParamName fileName:fileName mimeType:@"image/png"];
-                
-            } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                
-                DLog(@"post请求成功，请求地址为：%@",URLString);
-                DLog(@"====================================================================================================");
-                
-                [self.delegate requestResult:responseObject URLString:URLString otherParams:otherParams];
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                
-                DLog(@"post请求失败，请求地址为：%@",URLString);
-                DLog(@"post请求失败，错误原因：%@",[NSString codeDescription:[error code]]);
-                DLog(@"====================================================================================================");
-                
-                [self.delegate requestFailure:URLString error:error otherParams:otherParams];
-                
-                if (error.userInfo[@"com.alamofire.serialization.response.error.data"]) {
-                    
-                    DLog(@"com.alamofire.serialization.response.error.data: %@",[[NSString alloc] initWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] encoding:NSUTF8StringEncoding]);
-                }
-            }];
-            [self.requestDic setObject:dataTask forKey:[otherParams objectForKey:YYNotificationKey]];
-        } else {
+            //在表单这里提交图片以外的参数
+            [formData appendPartWithFormData:paramData name:@"param"];
             
-            //TODO:填充图片请求的get方法
-        }
+            //上传文件
+            NSString *fileName = [NSString stringWithFormat:@"%@.jpg", [NSString getCurrentTimeString]];
+            
+            //BUG FIX:name为图片上传的参数
+            [formData appendPartWithFileData:imageData name:@"file" fileName:fileName mimeType:@"multipart/form-data"];
+            
+        } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            
+            [self requestSuccess:responseObject URLString:URLString parameters:mutableParameters otherParams:otherParams];
+            
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            
+            [self requestFailure:error URLString:URLString parameters:mutableParameters otherParams:otherParams];
+        }];
+        
+        //加入线程集合
+        [self.requestDic setObject:dataTask forKey:URLString];
     }
+}
+
+- (void)requestSuccess:(id)responseObject URLString:(NSString *)URLString parameters:(NSDictionary *)parameters otherParams:(NSDictionary *)otherParams {
+    
+    DLog(@"请求成功，返回的数据为：%@",responseObject);
+    DLog(@"请求成功，请求的地址为：%@",URLString);
+    DLog(@"请求成功，参数列表为：%@",parameters);
+    DLog(@"请求结束：：：");
+    
+    [self.delegate requestSuccess:responseObject URLString:URLString parameters:parameters otherParams:otherParams];
+}
+
+- (void)requestFailure:(NSError *)error URLString:(NSString *)URLString parameters:(NSDictionary *)parameters otherParams:(NSDictionary *)otherParams {
+ 
+    DLog(@"请求失败，错误原因：%@",[NSString codeDescription:[error code]]);
+    if (error.userInfo[@"com.alamofire.serialization.response.error.data"]) {
+        
+        DLog(@"response.error: %@",[[NSString alloc] initWithData:error.userInfo[@"com.alamofire.serialization.response.error.data"] encoding:NSUTF8StringEncoding]);
+    }
+    
+    DLog(@"请求成功，请求的地址为：%@",URLString);
+    DLog(@"请求成功，参数列表为：%@",parameters);
+    DLog(@"请求结束：：：");
+    
+    [self.delegate requestFailure:error URLString:URLString parameters:parameters otherParams:otherParams];
 }
 
 
@@ -178,125 +213,6 @@ static YYCommunication *sharedManager = nil;
 
 
 
-
-
-
-
-- (void)httpRequest:(NSString *)URLString parameters:(id)parameters mode:(YYCommunicationMode)mode notificationName:(NSString *)notificationName {
-    
-    [self httpRequest:URLString parameters:parameters mode:mode notificationName:notificationName uidAndTokenFlag:NO];
-}
-
-- (void)httpRequest:(NSString *)URLString parameters:(id)parameters mode:(YYCommunicationMode)mode notificationName:(NSString *)notificationName uidAndTokenFlag:(BOOL)uidAndTokenFlag {
-    
-    [self httpRequest:URLString parameters:parameters mode:mode notificationName:notificationName uidAndTokenFlag:uidAndTokenFlag imageData:nil imageParamName:nil];
-}
-
-- (void)httpRequest:(NSString *)URLString parameters:(id)parameters mode:(YYCommunicationMode)mode notificationName:(NSString *)notificationName uidAndTokenFlag:(BOOL)uidAndTokenFlag imageData:(NSData *)data imageParamName:(NSString *)imageParamName {
-    
-    NSDictionary *parametersDic = nil;
-    if (!parameters) {
-        
-        parameters = [NSMutableDictionary dictionary];
-    }
-    
-    if (uidAndTokenFlag) {
-        
-        NSString *sid = [[YYDataHandle sharedManager] userDefaultStringValueWithKey:YYProjectSid];
-        
-        if ([NSString isStringEmpty:sid]) {
-            
-            sid = @"";
-        }
-        
-        [parameters setObject:sid forKey:YYProjectSid];
-        parametersDic = [parameters copy];
-    } else {
-        
-        parametersDic = parameters;
-    }
-    
-    DLog(@"====================================================================================================");
-    DLog(@"请求的地址为：%@",URLString);
-    DLog(@"参数列表为：%@",parametersDic);
-    DLog(@"请求方式为：%@",@(mode));
-    DLog(@"通知名称为：%@",notificationName);
-    
-    URLString = [URLString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
-    if (!data) {
-        
-        if (mode == 0) {
-            
-            NSURLSessionDataTask *dataTask = [[YYNetManage sharedManager] GET:URLString parameters:parametersDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                
-                DLog(@"get请求成功，请求地址为：%@",URLString);
-                DLog(@"====================================================================================================");
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:responseObject];
-                
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                
-                DLog(@"get请求失败，请求地址为：%@",URLString);
-                DLog(@"get请求失败，错误原因：%@",[NSString codeDescription:[error code]]);
-                DLog(@"====================================================================================================");
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:error];
-            }];
-            [self.requestDic setObject:dataTask forKey:notificationName];
-            
-        } else if (mode == 1) {
-            
-            NSURLSessionDataTask *dataTask = [[YYNetManage sharedManager] POST:URLString parameters:parametersDic progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                
-                DLog(@"post请求成功，请求地址为：%@",URLString);
-                DLog(@"====================================================================================================");
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:responseObject];
-                
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                
-                DLog(@"post请求失败，请求地址为：%@",URLString);
-                DLog(@"post请求失败，错误原因：%@",[NSString codeDescription:[error code]]);
-                DLog(@"====================================================================================================");
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:error];
-            }];
-            [self.requestDic setObject:dataTask forKey:notificationName];
-        }
-    } else {
-        
-        if (mode == 1) {
-            
-            NSURLSessionDataTask *dataTask = [[YYNetManage sharedManager] POST:URLString parameters:parametersDic constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
-                
-                // 上传文件
-                NSString *fileName = [NSString stringWithFormat:@"%@.jpg", [NSString getCurrentTimeString]];
-                
-                //BUG FIX:name为图片上传的参数
-                [formData appendPartWithFileData:data name:imageParamName fileName:fileName mimeType:@"image/png"];
-                
-            } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                
-                DLog(@"post请求成功，请求地址为：%@",URLString);
-                DLog(@"====================================================================================================");
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:responseObject];
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                
-                DLog(@"post请求失败，请求地址为：%@",URLString);
-                DLog(@"post请求失败，错误原因：%@",[NSString codeDescription:[error code]]);
-                DLog(@"====================================================================================================");
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:notificationName object:error];
-            }];
-            [self.requestDic setObject:dataTask forKey:notificationName];
-        } else {
-            
-            //TODO:填充图片请求的get方法
-        }
-    }
-}
 
 - (void)cancleRequestByNotificationName:(NSString *)notificationName {
     
@@ -306,6 +222,14 @@ static YYCommunication *sharedManager = nil;
         
         [dataTask cancel];
         [self.requestDic removeObjectForKey:notificationName];
+    }
+}
+
+- (void)cancleAllRequest {
+    
+    for (NSURLSessionDataTask *dataTask in self.requestDic) {
+        
+        [dataTask cancel];
     }
 }
 

@@ -20,16 +20,6 @@ NSString *const YYLocationUrl = @"http://7xpso2.com1.z0.glb.clouddn.com/cities.t
 
 static YYAPI *sharedManager = nil;
 
-- (id)init {
-    
-    if(self = [super init]) {
-        
-        
-    }
-    
-    return self;
-}
-
 + (instancetype)sharedManager {
     
     static dispatch_once_t once;
