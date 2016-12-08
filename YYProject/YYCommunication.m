@@ -101,7 +101,7 @@ static YYCommunication *sharedManager = nil;
         mutableOtherParams = [[NSMutableDictionary alloc] initWithObjectsAndKeys:URLString,YYNotificationKey, nil];
     } else {
         
-        mutableOtherParams = [parameters mutableCopy];
+        mutableOtherParams = [otherParams mutableCopy];
         [mutableOtherParams setObject:URLString forKey:YYNotificationKey];
     }
     
@@ -130,11 +130,11 @@ static YYCommunication *sharedManager = nil;
             
             NSURLSessionDataTask *dataTask = [[YYNetManage sharedManager] GET:URLString parameters:mutableParameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
-                [wself requestSuccess:responseObject URLString:URLString parameters:mutableParameters otherParams:otherParams];
+                [wself requestSuccess:responseObject URLString:URLString parameters:mutableParameters otherParams:mutableOtherParams];
                 
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
-                [wself requestFailure:error URLString:URLString parameters:mutableParameters otherParams:otherParams];
+                [wself requestFailure:error URLString:URLString parameters:mutableParameters otherParams:mutableOtherParams];
             }];
             
             //加入线程集合
@@ -144,11 +144,11 @@ static YYCommunication *sharedManager = nil;
             
             NSURLSessionDataTask *dataTask = [[YYNetManage sharedManager] POST:URLString parameters:mutableParameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 
-                [wself requestSuccess:responseObject URLString:URLString parameters:mutableParameters otherParams:otherParams];
+                [wself requestSuccess:responseObject URLString:URLString parameters:mutableParameters otherParams:mutableOtherParams];
                 
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
                 
-                [wself requestFailure:error URLString:URLString parameters:mutableParameters otherParams:otherParams];
+                [wself requestFailure:error URLString:URLString parameters:mutableParameters otherParams:mutableOtherParams];
             }];
             
             //加入线程集合
@@ -172,11 +172,11 @@ static YYCommunication *sharedManager = nil;
             
         } progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             
-            [wself requestSuccess:responseObject URLString:URLString parameters:mutableParameters otherParams:otherParams];
+            [wself requestSuccess:responseObject URLString:URLString parameters:mutableParameters otherParams:mutableOtherParams];
             
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             
-            [wself requestFailure:error URLString:URLString parameters:mutableParameters otherParams:otherParams];
+            [wself requestFailure:error URLString:URLString parameters:mutableParameters otherParams:mutableOtherParams];
         }];
         
         //加入线程集合

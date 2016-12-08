@@ -384,9 +384,9 @@
 - (void)requestPageDataWithType:(NSInteger)type {
     
     NSString *URLString = @"";
-    NSDictionary *params = @{@"page":[NSNumber numberWithInteger:self.pageNum]};
+    NSDictionary *params = @{@"page":@(self.pageNum)};
     NSDictionary *otherParams = @{@"tableView":self.tableView1,
-                                  YYNotificationPageLoad:[NSNumber numberWithInteger:type]};
+                                  YYNotificationPageLoad:@(type)};
     
     NSDictionary *parameters = @{@"URLString":URLString,
                                  @"parameters":params,
@@ -401,11 +401,11 @@
 - (void)stopLoadingAndPageInitOtherParams:(id)otherParams {
     
     UITableView *tableView = [otherParams objectForKey:@"tableView"];
-    NSString *pageLoadStr = [otherParams objectForKey:YYNotificationPageLoad];
+    NSNumber *pageLoadNum = [otherParams objectForKey:YYNotificationPageLoad];
     
-    if (pageLoadStr && tableView) {
+    if (pageLoadNum && tableView) {
         
-        if ([pageLoadStr integerValue] == 0) {
+        if ([pageLoadNum integerValue] == 0) {
             
             [tableView.mj_header endRefreshing];
         } else {

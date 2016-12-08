@@ -217,9 +217,9 @@
 - (void)requestPageDataWithType:(NSInteger)type {
     
     NSString *URLString = YYLocationUrl;
-    NSDictionary *params = @{@"page":[NSNumber numberWithInteger:self.pageNum]};
+    NSDictionary *params = @{@"page":@(self.pageNum)};
     NSDictionary *otherParams = @{@"tableView":self.tableView,
-                                  YYNotificationPageLoad:[NSNumber numberWithInteger:type]};
+                                  YYNotificationPageLoad:@(type)};
     
     NSDictionary *parameters = @{@"URLString":URLString,
                                  @"parameters":params,
@@ -282,8 +282,8 @@
             [self showErrorMessage:@"无更多数据"];
         }
         
-        NSString *pageLoadStr = [otherParams objectForKey:YYNotificationPageLoad];
-        if ([pageLoadStr isEqualToString:@"0"]) {
+        NSNumber *pageLoadNum = [otherParams objectForKey:YYNotificationPageLoad];
+        if ([pageLoadNum integerValue] == 0) {
             
             [self.tableView.mj_header endRefreshing];
         } else {
