@@ -44,6 +44,8 @@
     // command+ctrl+↑ h文件和m文件互换
     // command+shift+J 打开文件导航
     
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
+    
     self.automaticallyAdjustsScrollViewInsets = NO;//去掉多余的滚动间距
     self.navigationController.navigationBar.translucent = NO;//去掉导航透明
     self.tabBarController.tabBar.translucent = NO;//去掉底部透明
